@@ -21,15 +21,15 @@ void STBAR()
     prev_state=state;
     state=11;
   }
-//if(WiFi.status() == WL_CONNECTED)
-//{
-//  u8g2.drawXBM(30, -1, stwifi_width, stwifi_height, stwifi_bits);
-//}
-//
-//else 
-//{
-//  u8g2.drawXBM(30, -1, ic_signal_wifi_off_width, ic_signal_wifi_off_height, ic_signal_wifi_off_bits);
-//}
+if(WiFi.status() == WL_CONNECTED)
+{
+  u8g2.drawXBM(30, -1, stwifi_width, stwifi_height, stwifi_bits);
+}
+
+else 
+{
+  u8g2.drawXBM(30, -1, ic_signal_wifi_off_width, ic_signal_wifi_off_height, ic_signal_wifi_off_bits);
+}
     u8g2.setDrawColor(1);
   }
 

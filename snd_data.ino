@@ -34,7 +34,7 @@ void sendRate()
   if (WiFi.status() == WL_CONNECTED) {
     sprintf(rate_channel, mqtt_channel_rate, id);
     mqttClient.publish(rate_channel, e_data);
-    mqttClient.disconnect();
+   // mqttClient.disconnect();
     ticker_reached = false;
     wifi_status=5;
     yield() ;

@@ -24,6 +24,11 @@ boolean sleeper=false;
 #define ENCODER_BTN      4
 #define DROP_PIN        5
 
+//#define ENCODER_PINA     5
+//#define ENCODER_PINB     13
+//#define ENCODER_BTN      4
+//#define DROP_PIN        14
+
 int state = 0;
 int prev_state=0;
 int ui_state = 0;
@@ -38,6 +43,8 @@ String DataStatus = "nill";
 
 #include <U8g2lib.h>
 U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2(U8G2_R1, /* clock=*/ 13, /* data=*/12, /* cs=*/ 1, /* dc=*/ 10, /* reset=*/ 14);
+//U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2(U8G2_R1, /* clock=*/ 1, /* data=*/2, /* cs=*/ 10, /* dc=*/ 15, /* reset=*/ U8X8_PIN_NONE);
+
 
 //char *d_f = "<<back*60*20*\0";
 char *s_up = "wifi conf&wifi conf&update&update&\0";
@@ -58,7 +65,7 @@ char r_channel_pat[50];
 char r_channel_med[50];
 char r_channel_rate[50];
 
-const char* mqtt_server = "192.168.0.19";
+const char* mqtt_server = "192.168.0.14";
 const char* mqtt_channel_update = "dripo/%s/update";                    /// update
 const char* mqtt_channel_df = "dripo/%s/df";          /// to recieve df details
 const char* mqtt_channel_pat = "dripo/%s/bed";                    /// to recieve patient list

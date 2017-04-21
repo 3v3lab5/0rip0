@@ -154,7 +154,7 @@ void M_pwroff()
 
 void update_dripo()
 {
-  ESPhttpUpdate.update("http://evelabs.co/mqtt_esp8266.ino.nodemcu.bin");
+  ESPhttpUpdate.update("http://evelabs.co/Drip0.ino.nodemcu.bin");
 
 }
 
@@ -213,11 +213,11 @@ void Sho_Rate()
           // dpf->~MENU();
           // delete dpf;
           //MENU *dpf= new MENU;
-           if (PMonState == 3)
-          {
-            DataStatus = "stop";
-
-          }
+//           if (PMonState == 3)
+//          {
+//            DataStatus = "stop";
+//
+//          }
           state = 2;
           ui_state = 2;
           infuseMenu = 0;

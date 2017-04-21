@@ -4,9 +4,9 @@ int wifi_connect(int WIFI_STATE)
 {
 
   mqttClient.loop();
-    const char* DRIPO_NAME = "DRIPO-%d";
+  const char* DRIPO_NAME = "DRIPO-%d";
 
-    sprintf(id, DRIPO_NAME, ESP.getChipId());
+  sprintf(id, DRIPO_NAME, ESP.getChipId());
 
 
   if (WIFI_STATE == 1)
@@ -46,25 +46,26 @@ int wifi_connect(int WIFI_STATE)
   }
   else if (WIFI_STATE == 2)
   {
-    
+
 
   }
 
 
   else if (WIFI_STATE == 4) {
-//    mqttClient.loop();
-//
-//    const char* DRIPO_NAME = "DRIPO-%d";
-//
-//    sprintf(id, DRIPO_NAME, ESP.getChipId());
-//
-//    WiFiManager wifiManager;
-//    wifiManager.setConnectTimeout(10);
+    //    mqttClient.loop();
+    //
+    //    const char* DRIPO_NAME = "DRIPO-%d";
+    //
+    //    sprintf(id, DRIPO_NAME, ESP.getChipId());
+    //
+    //    WiFiManager wifiManager;
+    //    wifiManager.setConnectTimeout(10);
     WiFi.mode(WIFI_OFF);
 
     WiFiManager wifiManager_Ondemand;
     wifiManager_Ondemand.setConfigPortalTimeout(90);
-
+    WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
+    wifiManager_Ondemand.addParameter(&custom_mqtt_server);
     if (!wifiManager_Ondemand.startConfigPortal(id)) {
       //      Serial.println("failed to connect and hit timeout");
       //      delay(3000);
@@ -75,8 +76,7 @@ int wifi_connect(int WIFI_STATE)
 
     }
 
-    WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
-    wifiManager_Ondemand.addParameter(&custom_mqtt_server);
+
     mqtt_server = custom_mqtt_server.getValue();
     mqttClient.setServer(mqtt_server, mqtt_port);
     mqttClient.setCallback(callback);
@@ -98,22 +98,22 @@ int wifi_connect(int WIFI_STATE)
   }
   else  if (WIFI_STATE == 5)
 
-{
-  #define FPM_SLEEP_MAX_TIME 0xFFFFFFF
+  {
+#define FPM_SLEEP_MAX_TIME 0xFFFFFFF
 
-      wifi_set_sleep_type(MODEM_SLEEP_T);
+    wifi_set_sleep_type(MODEM_SLEEP_T);
     wifi_station_disconnect();
     wifi_set_opmode(NULL_MODE); // set WiFi mode to null mode
     wifi_fpm_open(); // enable force sleep
     wifi_fpm_do_sleep(FPM_SLEEP_MAX_TIME);
     delay(1);
-return 2;
-}
+    return 2;
+  }
   else  if (WIFI_STATE == 6)
   {
 
-  //  const char* ssid     = "EVELABS_TECH";
-   // const char* password = "BQQJUDWB";
+    //  const char* ssid     = "EVELABS_TECH";
+    // const char* password = "BQQJUDWB";
     wifi_fpm_do_wakeup();
     wifi_fpm_close();
 
