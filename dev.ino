@@ -63,7 +63,7 @@ int wifi_connect(int WIFI_STATE)
     WiFi.mode(WIFI_OFF);
 
     WiFiManager wifiManager_Ondemand;
-    wifiManager_Ondemand.setConfigPortalTimeout(90);
+    wifiManager_Ondemand.setConfigPortalTimeout(150);
     WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
     wifiManager_Ondemand.addParameter(&custom_mqtt_server);
     if (!wifiManager_Ondemand.startConfigPortal(id)) {
@@ -119,7 +119,7 @@ int wifi_connect(int WIFI_STATE)
 
     wifi_set_opmode(STATION_MODE);
     wifi_station_connect();
-    WiFi.setOutputPower(0);
+  //  WiFi.setOutputPower(0);
     // WiFi.forceSleepWake();
     //WiFi.mode(WIFI_STA);
     // wifi_station_connect();
