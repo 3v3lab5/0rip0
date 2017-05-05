@@ -17,7 +17,7 @@ void wifi_init()
 
 void menu_1()
 {
-
+  dot_x = 0;
   if (ui_x > 0)
   {
     ui_x = ui_x - 32;
@@ -29,8 +29,15 @@ void menu_1()
     case 3:  state = 3;
       break;
     case 1 :  if (WiFi.status() == WL_CONNECTED)
-      { state = 5;
-        DataStatus = "df";
+      { if (mqttClient.connected()) {
+          DataStatus = "df";
+         //           state = 5;
+
+        }
+        else {
+          state = 14;
+          ui_state = 11;
+        }
       }
 
       else {
@@ -46,6 +53,8 @@ void menu_1()
 void menu_2()
 {
 
+ dot_x = 14;
+ 
   if (ui_x < 64)
   {
     ui_x = ui_x + 32;
@@ -76,6 +85,8 @@ void menu_2()
 
 void menu_3()
 {
+   dot_x = 28;
+
   if (ui_x < 128)
   {
     ui_x = ui_x + 32;
@@ -122,6 +133,10 @@ void M_setup()
         ui_state = 5;
         state = 8;
       }
+      else  if (Setup.getSelect() == "system") {
+        ui_state = 10;
+        state = 13;
+      }
       break;
     case 3: Setup.up();
       break;
@@ -139,9 +154,10 @@ void M_pwroff()
 
       }
       else if (dialogbox.getDia() == "Yes") {
-        
+
         u8g2.setPowerSave(1);
         ESP.deepSleep(0, WAKE_NO_RFCAL) ;
+        yield();
         delay(100);
       }
       break;
@@ -213,16 +229,15 @@ void Sho_Rate()
           // dpf->~MENU();
           // delete dpf;
           //MENU *dpf= new MENU;
-//           if (PMonState == 3)
-//          {
-//            DataStatus = "stop";
-//
-//          }
+          if (PMonState == 3)
+          {
+            DataStatus = "stop";
+          }
           state = 2;
           ui_state = 2;
           infuseMenu = 0;
           MonState = 0;
-         
+
         }
         break;
       case 3: dialogbox._diaup();
@@ -283,3 +298,31 @@ void fin()
 
 }
 
+void Developer()
+{
+  switch (get_button())
+  {
+    case 1:
+
+      state = 6;
+      ui_state = 7;
+      break;
+  }
+
+
+}
+
+
+void ServErr()
+{
+  switch (get_button())
+  {
+    case 1: if (dialogbox.getDia() == "Ok") {
+        state = 2;
+        ui_state = 2;
+
+      }
+      break;
+
+  }
+}

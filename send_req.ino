@@ -7,6 +7,7 @@ String send_req(String Data)
 
   else if(!mqttClient.connected()) 
   {
+  return "nill";
 
   }
  else if(Data=="df")

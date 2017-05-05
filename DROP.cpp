@@ -1,5 +1,5 @@
 #include"DROP.h"
-#define FILTER 0.92
+#define FILTER 0.50
 
 
 int DROP::getRate()
@@ -77,6 +77,12 @@ void DROP::setMed(String med)
 {
   _Med = med;
 }
+
+void DROP::setMedName(String medname)
+{
+  _MedName = medname;
+}
+
 void DROP::setNam(String nam)
 {
   _Name = nam;
@@ -130,6 +136,13 @@ String DROP::getMed()
 {
 
   return _Med;
+
+}
+
+String DROP::getMedName()
+{
+
+  return _MedName;
 
 }
 String DROP::getBed()

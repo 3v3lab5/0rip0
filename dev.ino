@@ -11,14 +11,48 @@ int wifi_connect(int WIFI_STATE)
 
   if (WIFI_STATE == 1)
   {
+     if (SPIFFS.begin()) {
+   // Serial.println("mounted file system");
+    if (SPIFFS.exists("/config.json")) {
+      //file exists, reading and loading
+   //   Serial.println("reading config file");
+      File configFile = SPIFFS.open("/config.json", "r");
+      if (configFile) {
+      //  Serial.println("opened config file");
+        size_t size = configFile.size();
+        // Allocate a buffer to store contents of the file.
+        std::unique_ptr<char[]> buf(new char[size]);
 
+        configFile.readBytes(buf.get(), size);
+        DynamicJsonBuffer jsonBuffer;
+        JsonObject& json = jsonBuffer.parseObject(buf.get());
+     //   json.printTo(Serial);
+        if (json.success()) {
+      //    Serial.println("\nparsed json");
+
+          strcpy(mqtt_server, json["mqtt_server"]);
+       //   strcpy(mqtt_port, json["mqtt_port"]);
+
+        } else {
+       //   Serial.println("failed to load json config");
+        }
+      }
+    }
+  } else {
+    Serial.println("failed to mount FS");
+}
+
+ // WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
+ // WiFiManagerParameter custom_mqtt_port("port", "mqtt port", mqtt_port, 6);
     WiFiManager wifiManager;
+   //  wifiManager.setSaveConfigCallback(saveConfigCallback);
     wifiManager.setConnectTimeout(10);
     wifiManager.setConfigPortalTimeout(1);
-    WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
-    wifiManager.addParameter(&custom_mqtt_server);
-    mqtt_server = custom_mqtt_server.getValue();
-    mqttClient.setServer(mqtt_server, mqtt_port);
+   // WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
+   //  wifiManager.addParameter(&custom_mqtt_server);
+   //  wifiManager.addParameter(&custom_mqtt_port);
+  //  mqtt_server = custom_mqtt_server.getValue();
+    mqttClient.setServer(mqtt_server,mqtt_port);
     mqttClient.setCallback(callback);
     // void configModeCallback (WiFiManager *myWiFiManager);
     //wifiManager.setAPCallback(configModeCallback);
@@ -61,10 +95,10 @@ int wifi_connect(int WIFI_STATE)
     //    WiFiManager wifiManager;
     //    wifiManager.setConnectTimeout(10);
     WiFi.mode(WIFI_OFF);
-
-    WiFiManager wifiManager_Ondemand;
-    wifiManager_Ondemand.setConfigPortalTimeout(150);
     WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
+    WiFiManager wifiManager_Ondemand;
+    wifiManager_Ondemand.setAPCallback(configModeCallback);
+    wifiManager_Ondemand.setConfigPortalTimeout(150);
     wifiManager_Ondemand.addParameter(&custom_mqtt_server);
     if (!wifiManager_Ondemand.startConfigPortal(id)) {
       //      Serial.println("failed to connect and hit timeout");
@@ -77,7 +111,25 @@ int wifi_connect(int WIFI_STATE)
     }
 
 
-    mqtt_server = custom_mqtt_server.getValue();
+ //   mqtt_server = custom_mqtt_server.getValue();
+  strcpy(mqtt_server, custom_mqtt_server.getValue());
+
+  
+    //  Serial.println("saving config");
+    DynamicJsonBuffer jsonBuffer;
+    JsonObject& json = jsonBuffer.createObject();
+    json["mqtt_server"] = mqtt_server;
+
+    File configFile = SPIFFS.open("/config.json", "w");
+    if (!configFile) {
+  //    Serial.println("failed to open config file for writing");
+    }
+
+  //  json.printTo(Serial);
+    json.printTo(configFile);
+    configFile.close();
+
+    
     mqttClient.setServer(mqtt_server, mqtt_port);
     mqttClient.setCallback(callback);
     mqttClient.connect(id);
@@ -136,12 +188,7 @@ int wifi_connect(int WIFI_STATE)
     }//}
 
     mqttClient.setServer(mqtt_server, mqtt_port);
-    //
-    // // wifi_station_connect();
-    //  wifi_station_connect();
-    //WiFi.begin("EVELABS_TECH", "BQQJUDWB");
-
-    /// wifiManager.autoConnect(id);
+    
     yield() ;
     mqttClient.connect(id);
     // sprintf(up_channel, mqtt_channel_update, id);
@@ -160,5 +207,20 @@ int wifi_connect(int WIFI_STATE)
   }
 }
 
+
+void configModeCallback (WiFiManager *myWiFiManager) {
+    u8g2.clearBuffer();
+
+  u8g2.setFont(u8g2_font_profont10_tf);
+  u8g2.setCursor(0, 47);
+  u8g2.print(myWiFiManager->getConfigPortalSSID());
+
+  u8g2.sendBuffer();
+
+   u8g2.setFont(u8g2_font_crox2h_tr);
+
+
+ 
+}
 
 

@@ -3,7 +3,7 @@
 
 void sendRate()
 {
-  char e_data[15];
+  char e_data[50];
 
   int SRate = _dripo.getRateMl();
   int SIvol = _dripo.getvolInf();
@@ -13,8 +13,8 @@ void sendRate()
   sprintf(e_data, "%s-%d-%d-%d", chr, SRate, SIvol, SRtime);
 
 
-//  if (WiFi.status() != WL_CONNECTED)
-//  {
+  if (WiFi.status() != WL_CONNECTED)
+ {
     //        wifi_fpm_do_wakeup();
     //
     //   wifi_fpm_close();
@@ -25,19 +25,21 @@ void sendRate()
     //   delay(1);
  //   WiFi.forceSleepWake();
 //    delay(1);
-     wifi_status=6;
+   wifi_status=6;
 
- // }
+ }
 
 
   yield() ;
   if (WiFi.status() == WL_CONNECTED) {
+    if (mqttClient.connected()) {
     sprintf(rate_channel, mqtt_channel_rate, id);
     mqttClient.publish(rate_channel, e_data);
    // mqttClient.disconnect();
     ticker_reached = false;
     wifi_status=5;
-    yield() ;
+   yield() ;
+  }
     
   }
 

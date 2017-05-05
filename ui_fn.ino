@@ -26,6 +26,7 @@ void UI_Wifi()
 }
 void UI_Menu()
 {
+//u8g2 = U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI (U8G2_R3, /* clock=*/ 1, /* data=*/2, /* cs=*/ 10);
 
   u8g2.drawXBM(8 - ui_x, 35, ic_opacity_black_24dp_width, ic_opacity_black_24dp_height, ic_opacity_black_24dp_bits);
   u8g2.setCursor(6 - ui_x, 100);
@@ -36,8 +37,12 @@ void UI_Menu()
   u8g2.print("SETUP");
 
   u8g2.drawXBM(136 - ui_x, 35, ic_power_settings_new_black_24dp_width, ic_power_settings_new_black_24dp_height, ic_power_settings_new_black_24dp_bits);
-  u8g2.setCursor(135 - ui_x, 100);
+  u8g2.setCursor(138 - ui_x, 100);
   u8g2.print("SLEEP");
+  u8g2.drawCircle(18, 120, 3, U8G2_DRAW_ALL);
+  u8g2.drawCircle(32, 120, 3, U8G2_DRAW_ALL);
+  u8g2.drawCircle(46, 120, 3, U8G2_DRAW_ALL);
+    u8g2.drawDisc(18+dot_x, 120, 3, U8G2_DRAW_ALL);
 
 }
 
@@ -110,7 +115,7 @@ void UI_infuse()
         else {
           _dripo.setDf(dpf.getSelect());
           DataStatus="bed";
-          infuseMenu = 1;
+        //  infuseMenu = 1;
         }
         break;
       case 3: dpf.up();
@@ -132,7 +137,7 @@ void UI_infuse()
         else {
           _dripo.setBed(bed.getSelect());
           DataStatus="med";
-          infuseMenu = 2;
+      //    infuseMenu = 2;
           //  ui_state = 3;
 
           //  state = 9;
@@ -158,7 +163,7 @@ void UI_infuse()
           _dripo.setMed(med.getSelect());
                     DataStatus="rate";
 
-          infuseMenu = 3;
+  //        infuseMenu = 3;
 
           //   ui_state = 3;
 
@@ -179,9 +184,9 @@ void UI_infuse()
    txt=_dripo.getName();
     u8g2.setCursor(32-(u8g2.getStrWidth(txt.c_str())/2), 30);
     u8g2.print(_dripo.getName());
-   txt=_dripo.getMed();
+   txt=_dripo.getMedName();
     u8g2.setCursor(32-(u8g2.getStrWidth(txt.c_str())/2), 50);
-    u8g2.print(_dripo.getMed());
+    u8g2.print(_dripo.getMedName());
        txt=_dripo.getTvol();
     u8g2.setCursor(22-(u8g2.getStrWidth(txt.c_str())/2), 70);
     u8g2.print(_dripo.getTvol());
@@ -237,6 +242,8 @@ void UI_Shutdown()
 
 void UI_Setup()
 {
+//U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI u8g2(U8G2_R3, /* clock=*/ 1, /* data=*/2, /* cs=*/ 10);
+
   Setup.display_menu();
 
 }
@@ -253,5 +260,44 @@ void UI_fin()
 {
  
   dialogbox.dialog_box("Ok&", 82, 1);
+
+}
+
+void UI_dripo()
+{
+  // u8g2=U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI (U8G2_R3, /* clock=*/ 1, /* data=*/2, /* cs=*/ U8X8_PIN_NONE);
+
+     u8g2.setFont(u8g2_font_profont10_tf);
+
+    const char* DRIPO_NAME = "DRIPO-%d";
+float stateOfCharge = batteryMonitor.getSoC();
+  float cellVoltage = batteryMonitor.getVCell();
+
+  sprintf(id, DRIPO_NAME, ESP.getChipId());
+    u8g2.setCursor(0, 20);
+  u8g2.print(id);
+  u8g2.setCursor(0, 40);
+  u8g2.print(analogRead(A0));
+   u8g2.setCursor(0, 70);
+   u8g2.print(stateOfCharge);
+    u8g2.setCursor(0, 100);
+   u8g2.print(cellVoltage);
+       u8g2.setCursor(0, 120);
+//     u8g2.print(x);
+
+
+   u8g2.setFont(u8g2_font_crox2h_tr);
+
+
+}
+
+
+void UI_ServErr()
+{
+  u8g2.setCursor(32-(u8g2.getStrWidth("connection")/2), 42);
+  u8g2.print("connection");
+   u8g2.setCursor(32-(u8g2.getStrWidth("error")/2), 62);
+  u8g2.print("error");
+  dialogbox.dialog_box("Ok&", 72, 1);
 
 }

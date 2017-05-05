@@ -15,6 +15,8 @@ int _rate2set;
 String _Bed;
 String _Med;
 String _Name;
+String _MedName;
+
 int _Tvol;
 int _Infvol;
 long _Dcount;
@@ -38,6 +40,8 @@ int getRtime();
 
 String getName();
 String getMed();
+String getMedName();
+
 String getBed();
 
 int getTvol();
@@ -46,6 +50,8 @@ int getDf();
 void setDf(String);
 void setBed(String);
 void setMed(String);
+void setMedName(String);
+
 void setNam(String);
 void setTvol(String);
 void setR2set(String);
