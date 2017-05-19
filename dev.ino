@@ -52,17 +52,20 @@ int wifi_connect(int WIFI_STATE)
    //  wifiManager.addParameter(&custom_mqtt_server);
    //  wifiManager.addParameter(&custom_mqtt_port);
   //  mqtt_server = custom_mqtt_server.getValue();
+
     mqttClient.setServer(mqtt_server,mqtt_port);
     mqttClient.setCallback(callback);
     // void configModeCallback (WiFiManager *myWiFiManager);
     //wifiManager.setAPCallback(configModeCallback);
-
 
     if (!wifiManager.autoConnect(id)) {
 
       WiFi.mode(WIFI_OFF);
       return 2;
     }
+
+      if ( WiFi.status() == WL_CONNECTED ) {
+
     mqttClient.connect(id);
     // sprintf(up_channel, mqtt_channel_update, id);
     // mqttClient.subscribe(up_channel);
@@ -78,11 +81,23 @@ int wifi_connect(int WIFI_STATE)
     mqttClient.subscribe(r_channel_rate);
     return 2;
   }
-  else if (WIFI_STATE == 2)
-  {
-
 
   }
+  else if (WIFI_STATE == 2)
+  {
+//    if(sleep==false)
+//{
+////
+//// // wifi_set_sleep_type(MODEM_SLEEP_T);
+//  wifi_fpm_open();
+//wifi_fpm_do_sleep(26843455);
+//delay(500);
+//sleep = true;
+//}
+return 2;
+
+  }
+
 
 
   else if (WIFI_STATE == 4) {

@@ -27,6 +27,7 @@ void UI_Wifi()
 void UI_Menu()
 {
 //u8g2 = U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI (U8G2_R3, /* clock=*/ 1, /* data=*/2, /* cs=*/ 10);
+  analogWrite(IR_PIN,0);
 
   u8g2.drawXBM(8 - ui_x, 35, ic_opacity_black_24dp_width, ic_opacity_black_24dp_height, ic_opacity_black_24dp_bits);
   u8g2.setCursor(6 - ui_x, 100);
@@ -48,7 +49,9 @@ void UI_Menu()
 
 void UI_Rate()
 
-{ u8g2.setDrawColor(1);
+{ 
+  analogWrite(IR_PIN, 512);
+  u8g2.setDrawColor(1);
    String txt;
    txt=_dripo.getRateMl();
   u8g2.setFont(u8g2_font_timR24_tn);
@@ -87,6 +90,7 @@ void UI_Rate()
   }
 
   else if (MonState == 3) {
+
     u8g2.setCursor(0, 92);
     u8g2.print("Vol infusd");
     u8g2.setCursor(36, 128);
@@ -95,7 +99,18 @@ void UI_Rate()
     u8g2.setCursor(0, 116);
     u8g2.print(_dripo.getvolInf());
   if(ticker_reached){
+    
     sendRate();
+  }
+  if(_dripo.MonRate()==1 && notified==false)
+  {
+    Notifier(200);                                 ///error code 200
+    notified = true;
+  }
+  else if(_dripo.MonRate()==0 && notified==true)
+  {
+    Notifier(100);                                 //ok code 100
+    notified = false;
   }
   }
 }
@@ -207,9 +222,14 @@ void UI_infuse()
 
         }
         else if (dialogbox.getDia() == "Yes") {
+          
+      if(sleep==true){
+      sleep = false;
+    }
           ui_state = 3;
 
           state = 9;
+
         }
         break;
       case 3: dialogbox._diaup();
@@ -221,6 +241,7 @@ void UI_infuse()
 }
 
 void UI_Update() {
+  
   u8g2.setDrawColor(1);
 
   u8g2.drawXBM(8, 35, update_icon_width, update_icon_height, update_icon_bits);
@@ -270,8 +291,7 @@ void UI_dripo()
      u8g2.setFont(u8g2_font_profont10_tf);
 
     const char* DRIPO_NAME = "DRIPO-%d";
-float stateOfCharge = batteryMonitor.getSoC();
-  float cellVoltage = batteryMonitor.getVCell();
+
 
   sprintf(id, DRIPO_NAME, ESP.getChipId());
     u8g2.setCursor(0, 20);
@@ -283,7 +303,7 @@ float stateOfCharge = batteryMonitor.getSoC();
     u8g2.setCursor(0, 100);
    u8g2.print(cellVoltage);
        u8g2.setCursor(0, 120);
-//     u8g2.print(x);
+ //    u8g2.print(pot);
 
 
    u8g2.setFont(u8g2_font_crox2h_tr);

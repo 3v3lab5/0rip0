@@ -28,8 +28,9 @@ void menu_1()
   {
     case 3:  state = 3;
       break;
-    case 1 :  if (WiFi.status() == WL_CONNECTED)
-      { if (mqttClient.connected()) {
+    case 1 : //WiFi.forceSleepWake();
+              if (WiFi.status() == WL_CONNECTED)
+              { if (mqttClient.connected()) {
           DataStatus = "df";
          //           state = 5;
 
@@ -130,8 +131,12 @@ void M_setup()
         wifi_status = 4;
       }
       else  if (Setup.getSelect() == "update") {
+        if (WiFi.status() == WL_CONNECTED)
+        {
+
         ui_state = 5;
         state = 8;
+       }
       }
       else  if (Setup.getSelect() == "system") {
         ui_state = 10;
@@ -156,9 +161,10 @@ void M_pwroff()
       else if (dialogbox.getDia() == "Yes") {
 
         u8g2.setPowerSave(1);
-        ESP.deepSleep(0, WAKE_NO_RFCAL) ;
-        yield();
-        delay(100);
+        system_deep_sleep_set_option(2);
+         system_deep_sleep(0);
+       //        yield();
+        delay(500);
       }
       break;
     case 3: dialogbox._diaup();
@@ -170,7 +176,14 @@ void M_pwroff()
 
 void update_dripo()
 {
-  ESPhttpUpdate.update("http://evelabs.co/Drip0.ino.nodemcu.bin");
+//  if(WiFi.status() != WL_CONNECTED) {
+//   
+//  wifi_fpm_do_wakeup();
+//  wifi_fpm_close();
+//   delay(5000);
+//  
+//  }
+    ESPhttpUpdate.update("http://evelabs.co/Drip0.ino.nodemcu.bin");
 
 }
 
@@ -237,7 +250,6 @@ void Sho_Rate()
           ui_state = 2;
           infuseMenu = 0;
           MonState = 0;
-
         }
         break;
       case 3: dialogbox._diaup();

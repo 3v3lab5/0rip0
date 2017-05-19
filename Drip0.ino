@@ -1,5 +1,5 @@
 #include <FS.h>
-#include <ArduinoJson.h> 
+#include <ArduinoJson.h>
 #include <Wire.h>
 #include "MENU.h"
 #include"DROP.h"
@@ -18,9 +18,13 @@ elapsedMillis timeElapsed, logo_time, idle_time; //dataTicker;
 MAX17043 batteryMonitor;
 Ticker ticker;
 
+float stateOfCharge;
+float cellVoltage;
+boolean startDisplay = false;
+boolean sleep = true;
 boolean ticker_reached;
 boolean sleeper = false;
-
+boolean notified = false;
 //#define ENCODER_PINA     0
 //#define ENCODER_PINB     2
 //#define ENCODER_BTN      4
@@ -87,7 +91,8 @@ const char* mqtt_channel_req = "dripo/%s/req";                  ///to send df de
 const char* mqtt_channel_bedreq = "dripo/%s/bed_req";                  ///to send bed details
 const char* mqtt_channel_medreq = "dripo/%s/med_req";                  ///to send med details
 const char* mqtt_channel_ratereq = "dripo/%s/rate_req";                  ///to send rate details
-const char* mqtt_channel_mon = "dripo/%s/mon";                  ///to send rate details
+const char* mqtt_channel_mon = "dripo/%s/mon";                  ///to send start/stop details
+const char* mqtt_channel_err = "dripo/%s/err";                  ///to send err details
 
 
 const int mqtt_port = 1883;
@@ -100,18 +105,19 @@ PubSubClient mqttClient(wclient);
 
 
 void setup() {
-// Wire.begin(2,0);
-//
-//    Wire.beginTransmission(32); // transmit to device #20 (0x20)
-//  // device address is specified in datasheet
-//  Wire.write(2);// sends instruction byte
-//  Wire.write(0);
-//   //byte x = Wire.read();             // sends potentiometer value byte
-//  Wire.endTransmission();
-//  digitalWrite(2,0);
-//  digitalWrite(0,0);
 
-     pinMode(ADC_PIN, INPUT);
+  Wire.begin(2, 0);
+
+  Wire.beginTransmission(47); // transmit to device #20 (0x20)
+  Wire.write(byte(0x10));// sends instruction byte
+  Wire.write(byte(0x64));
+  //   //byte x = Wire.read(); // sends potentiometer value byte
+
+  stateOfCharge = batteryMonitor.getSoC();
+  cellVoltage = batteryMonitor.getVCell();
+  Wire.endTransmission();
+
+  pinMode(ADC_PIN, INPUT);
   pinMode(WAKE_PIN, OUTPUT);
   pinMode(IR_PIN, OUTPUT);
   pinMode(ENCODER_BTN, INPUT_PULLUP);
@@ -125,41 +131,35 @@ void setup() {
 
   attachInterrupt(ENCODER_PINA, encoder, RISING);
   attachInterrupt(ENCODER_PINB, encoder, RISING);
-  u8g2.begin();
+  //u8g2.begin();
   batteryMonitor.reset();
   batteryMonitor.quickStart();
   logo_time = 0;
-  ticker.attach(15, ticker_handler);
+ ticker.attach(60, ticker_handler);
 
- // BatteryCheck.attach(15, Batt_handler);
-
-//pinMode(10,OUTPUT);
 }
 
 
-void (* myFunc[15])() = {drawLogo, wifi_init, menu_1, menu_2, menu_3, M_infuse, M_setup, M_pwroff, update_dripo, Sho_Rate, WifiConf, Sleep, fin, Developer,ServErr};
+void (* myFunc[15])() = {drawLogo, wifi_init, menu_1, menu_2, menu_3, M_infuse, M_setup, M_pwroff, update_dripo, Sho_Rate, WifiConf, Sleep, fin, Developer, ServErr};
 void (* UI_Fn[12])() = {UI_Logo, UI_Wifi, UI_Menu, UI_Rate, UI_infuse, UI_Update, UI_Shutdown, UI_Setup, UI_WifiConf, UI_fin, UI_dripo, UI_ServErr};
 
 void loop() {
- analogWrite(WAKE_PIN, 0);
-  analogWrite(IR_PIN, 512);
+  if (startDisplay == false) {
+    u8g2.begin();
+    startDisplay = true;
+  }
+  analogWrite(WAKE_PIN, 0);
 
   u8g2.clearBuffer();
   UI_Fn[ui_state]();
   STBAR();
-
-
   u8g2.sendBuffer();
-
-//digitalWrite(10,0);
   myFunc[state]();
-
   yield();
   wifi_status =  wifi_connect(wifi_status);
   DataStatus = send_req(DataStatus);
   yield();
 
-  
 }
 
 
