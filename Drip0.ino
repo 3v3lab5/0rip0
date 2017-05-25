@@ -25,6 +25,7 @@ boolean sleep = true;
 boolean ticker_reached;
 boolean sleeper = false;
 boolean notified = false;
+boolean batchkflag = false;
 //#define ENCODER_PINA     0
 //#define ENCODER_PINB     2
 //#define ENCODER_BTN      4
@@ -37,10 +38,10 @@ boolean notified = false;
 #define WAKE_PIN        16
 #define IR_PIN        12
 #define ADC_PIN        A0
-
 int state = 0;
 int prev_state = 0;
 int ui_state = 0;
+int prev_ui_state = 0;
 int ui_x = 0;
 int dot_x = 0;
 int wifi_status = 0;
@@ -48,7 +49,7 @@ int BTN = 0;
 int infuseMenu = 0;
 int MonState = 0;
 int PMonState = 0;
-
+const char* VERSION = "0.8";
 String DataStatus = "nill";
 
 #include <U8g2lib.h>
@@ -66,6 +67,7 @@ MENU dpf;
 MENU bed;
 MENU med;
 MENU dialogbox(u8g2);
+MENU dialogbox1(u8g2);
 DROP _dripo;
 
 char id[30];
@@ -76,8 +78,10 @@ char r_channel_df[50];
 char r_channel_pat[50];
 char r_channel_med[50];
 char r_channel_rate[50];
-
-const char* mqtt_channel_update = "dripo/%s/update";                    /// update
+char r_channel_version[50];
+char r_channel_update[50];
+const char* mqtt_channel_version = "dripo/%s/version";               ///request from server for current version
+const char* mqtt_channel_update = "dripo/%s/update";                    /// request from server for update
 const char* mqtt_channel_df = "dripo/%s/df";          /// to recieve df details
 const char* mqtt_channel_pat = "dripo/%s/bed";                    /// to recieve patient list
 const char* mqtt_channel_med = "dripo/%s/med";                    /// to recieve med list
@@ -85,7 +89,9 @@ const char* mqtt_channel_r2set = "dripo/%s/rate2set";          /// to recieve pa
 
 //publish
 char pat_channel[50];
+char version_channel[50];
 char rate_channel[50];
+const char* mqtt_channel_myversion = "dripo/%s/myversion";                  ///to send current version
 const char* mqtt_channel_rate = "dripo/%s/rate";                  ///to send rate details
 const char* mqtt_channel_req = "dripo/%s/req";                  ///to send df details
 const char* mqtt_channel_bedreq = "dripo/%s/bed_req";                  ///to send bed details
@@ -113,7 +119,13 @@ void setup() {
   Wire.write(byte(0x64));
   //   //byte x = Wire.read(); // sends potentiometer value byte
 
-  stateOfCharge = batteryMonitor.getSoC();
+//  stateOfCharge = batteryMonitor.getSoC();
+  stateOfCharge=100;
+  if (stateOfCharge < 10)
+  {
+    ui_state = 12;
+    state = 15;
+  }
   cellVoltage = batteryMonitor.getVCell();
   Wire.endTransmission();
 
@@ -135,13 +147,13 @@ void setup() {
   batteryMonitor.reset();
   batteryMonitor.quickStart();
   logo_time = 0;
- ticker.attach(60, ticker_handler);
+  ticker.attach(60, ticker_handler);
 
 }
 
 
-void (* myFunc[15])() = {drawLogo, wifi_init, menu_1, menu_2, menu_3, M_infuse, M_setup, M_pwroff, update_dripo, Sho_Rate, WifiConf, Sleep, fin, Developer, ServErr};
-void (* UI_Fn[12])() = {UI_Logo, UI_Wifi, UI_Menu, UI_Rate, UI_infuse, UI_Update, UI_Shutdown, UI_Setup, UI_WifiConf, UI_fin, UI_dripo, UI_ServErr};
+void (* myFunc[18])() = {drawLogo, wifi_init, menu_1, menu_2, menu_3, M_infuse, M_setup, M_pwroff, update_dripo, Sho_Rate, WifiConf, Sleep, fin, Developer, ServErr, batlowoff,Infbatchk,Batchk};
+void (* UI_Fn[16])() = {UI_Logo, UI_Wifi, UI_Menu, UI_Rate, UI_infuse, UI_Update, UI_Shutdown, UI_Setup, UI_WifiConf, UI_fin, UI_dripo, UI_ServErr, UI_batlow,UI_InfBatChK,UI_batchk,UI_batfull};
 
 void loop() {
   if (startDisplay == false) {

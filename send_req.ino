@@ -65,6 +65,14 @@ String send_req(String Data)
     sprintf(pat_channel, mqtt_channel_mon, id);
     mqttClient.publish(pat_channel, chr);
     return "nill";
- } 
+ }
+
+    else if(Data=="ver")
+ { 
+    sprintf(version_channel,mqtt_channel_myversion, id);
+    mqttClient.publish(version_channel,VERSION);
+    return "nill";
+ }
+ 
 }
 

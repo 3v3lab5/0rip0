@@ -25,9 +25,12 @@ void UI_Wifi()
 
 }
 void UI_Menu()
+
 {
-//u8g2 = U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI (U8G2_R3, /* clock=*/ 1, /* data=*/2, /* cs=*/ 10);
-  analogWrite(IR_PIN,0);
+  u8g2.setFont(u8g2_font_crox2h_tr);
+
+  //u8g2 = U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI (U8G2_R3, /* clock=*/ 1, /* data=*/2, /* cs=*/ 10);
+  analogWrite(IR_PIN, 0);
 
   u8g2.drawXBM(8 - ui_x, 35, ic_opacity_black_24dp_width, ic_opacity_black_24dp_height, ic_opacity_black_24dp_bits);
   u8g2.setCursor(6 - ui_x, 100);
@@ -43,19 +46,19 @@ void UI_Menu()
   u8g2.drawCircle(18, 120, 3, U8G2_DRAW_ALL);
   u8g2.drawCircle(32, 120, 3, U8G2_DRAW_ALL);
   u8g2.drawCircle(46, 120, 3, U8G2_DRAW_ALL);
-    u8g2.drawDisc(18+dot_x, 120, 3, U8G2_DRAW_ALL);
+  u8g2.drawDisc(18 + dot_x, 120, 3, U8G2_DRAW_ALL);
 
 }
 
 void UI_Rate()
 
-{ 
+{
   analogWrite(IR_PIN, 512);
   u8g2.setDrawColor(1);
-   String txt;
-   txt=_dripo.getRateMl();
+  String txt;
+  txt = _dripo.getRateMl();
   u8g2.setFont(u8g2_font_timR24_tn);
-  u8g2.setCursor(32-(u8g2.getStrWidth(txt.c_str())/2), 47);
+  u8g2.setCursor(32 - (u8g2.getStrWidth(txt.c_str()) / 2), 47);
   u8g2.print(_dripo.getRateMl());
   u8g2.drawHLine(0, 64, 13);
   u8g2.drawHLine(51, 64, 13);
@@ -98,20 +101,20 @@ void UI_Rate()
     u8g2.setFont(u8g2_font_timR18_tn);
     u8g2.setCursor(0, 116);
     u8g2.print(_dripo.getvolInf());
-  if(ticker_reached){
-    
-    sendRate();
-  }
-  if(_dripo.MonRate()==1 && notified==false)
-  {
-    Notifier(200);                                 ///error code 200
-    notified = true;
-  }
-  else if(_dripo.MonRate()==0 && notified==true)
-  {
-    Notifier(100);                                 //ok code 100
-    notified = false;
-  }
+    if (ticker_reached) {
+
+      sendRate();
+    }
+    if (_dripo.MonRate() == 1 && notified == false)
+    {
+      Notifier(200);                                 ///error code 200
+      notified = true;
+    }
+    else if (_dripo.MonRate() == 0 && notified == true)
+    {
+      Notifier(100);                                 //ok code 100
+      notified = false;
+    }
   }
 }
 
@@ -129,8 +132,8 @@ void UI_infuse()
         }
         else {
           _dripo.setDf(dpf.getSelect());
-          DataStatus="bed";
-        //  infuseMenu = 1;
+          DataStatus = "bed";
+          //  infuseMenu = 1;
         }
         break;
       case 3: dpf.up();
@@ -151,8 +154,8 @@ void UI_infuse()
         }
         else {
           _dripo.setBed(bed.getSelect());
-          DataStatus="med";
-      //    infuseMenu = 2;
+          DataStatus = "med";
+          //    infuseMenu = 2;
           //  ui_state = 3;
 
           //  state = 9;
@@ -176,9 +179,9 @@ void UI_infuse()
         }
         else {
           _dripo.setMed(med.getSelect());
-                    DataStatus="rate";
+          DataStatus = "rate";
 
-  //        infuseMenu = 3;
+          //        infuseMenu = 3;
 
           //   ui_state = 3;
 
@@ -195,18 +198,18 @@ void UI_infuse()
 
   if (infuseMenu == 3)
   {
-   String txt;
-   txt=_dripo.getName();
-    u8g2.setCursor(32-(u8g2.getStrWidth(txt.c_str())/2), 30);
+    String txt;
+    txt = _dripo.getName();
+    u8g2.setCursor(32 - (u8g2.getStrWidth(txt.c_str()) / 2), 30);
     u8g2.print(_dripo.getName());
-   txt=_dripo.getMedName();
-    u8g2.setCursor(32-(u8g2.getStrWidth(txt.c_str())/2), 50);
+    txt = _dripo.getMedName();
+    u8g2.setCursor(32 - (u8g2.getStrWidth(txt.c_str()) / 2), 50);
     u8g2.print(_dripo.getMedName());
-       txt=_dripo.getTvol();
-    u8g2.setCursor(22-(u8g2.getStrWidth(txt.c_str())/2), 70);
+    txt = _dripo.getTvol();
+    u8g2.setCursor(22 - (u8g2.getStrWidth(txt.c_str()) / 2), 70);
     u8g2.print(_dripo.getTvol());
-           txt=_dripo.getDf();
-    u8g2.setCursor(22-(u8g2.getStrWidth(txt.c_str())/2), 90);
+    txt = _dripo.getDf();
+    u8g2.setCursor(22 - (u8g2.getStrWidth(txt.c_str()) / 2), 90);
     u8g2.print(_dripo.getDf());
     u8g2.setCursor(36, 70);
     u8g2.print("ml");
@@ -222,13 +225,17 @@ void UI_infuse()
 
         }
         else if (dialogbox.getDia() == "Yes") {
-          
-      if(sleep==true){
-      sleep = false;
-    }
-          ui_state = 3;
-
-          state = 9;
+          if (stateOfCharge > (15 + (_dripo.getTtime() / 12)))
+          {
+            ui_state = 3;
+            state = 9;
+          }
+          else
+          {
+      
+            ui_state = 13;
+            state = 16;
+          }
 
         }
         break;
@@ -241,7 +248,7 @@ void UI_infuse()
 }
 
 void UI_Update() {
-  
+
   u8g2.setDrawColor(1);
 
   u8g2.drawXBM(8, 35, update_icon_width, update_icon_height, update_icon_bits);
@@ -263,7 +270,7 @@ void UI_Shutdown()
 
 void UI_Setup()
 {
-//U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI u8g2(U8G2_R3, /* clock=*/ 1, /* data=*/2, /* cs=*/ 10);
+  //U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI u8g2(U8G2_R3, /* clock=*/ 1, /* data=*/2, /* cs=*/ 10);
 
   Setup.display_menu();
 
@@ -279,7 +286,7 @@ void UI_WifiConf()
 
 void UI_fin()
 {
- 
+
   dialogbox.dialog_box("Ok&", 82, 1);
 
 }
@@ -288,25 +295,25 @@ void UI_dripo()
 {
   // u8g2=U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI (U8G2_R3, /* clock=*/ 1, /* data=*/2, /* cs=*/ U8X8_PIN_NONE);
 
-     u8g2.setFont(u8g2_font_profont10_tf);
+  u8g2.setFont(u8g2_font_profont10_tf);
 
-    const char* DRIPO_NAME = "DRIPO-%d";
+  const char* DRIPO_NAME = "DRIPO-%d";
 
 
   sprintf(id, DRIPO_NAME, ESP.getChipId());
-    u8g2.setCursor(0, 20);
+  u8g2.setCursor(0, 20);
   u8g2.print(id);
   u8g2.setCursor(0, 40);
   u8g2.print(analogRead(A0));
-   u8g2.setCursor(0, 70);
-   u8g2.print(stateOfCharge);
-    u8g2.setCursor(0, 100);
-   u8g2.print(cellVoltage);
-       u8g2.setCursor(0, 120);
- //    u8g2.print(pot);
+  u8g2.setCursor(0, 70);
+  u8g2.print(stateOfCharge);
+  u8g2.setCursor(0, 100);
+  u8g2.print(cellVoltage);
+  u8g2.setCursor(0, 120);
+  //    u8g2.print(pot);
 
 
-   u8g2.setFont(u8g2_font_crox2h_tr);
+  u8g2.setFont(u8g2_font_crox2h_tr);
 
 
 }
@@ -314,10 +321,42 @@ void UI_dripo()
 
 void UI_ServErr()
 {
-  u8g2.setCursor(32-(u8g2.getStrWidth("connection")/2), 42);
+  u8g2.setCursor(32 - (u8g2.getStrWidth("connection") / 2), 42);
   u8g2.print("connection");
-   u8g2.setCursor(32-(u8g2.getStrWidth("error")/2), 62);
+  u8g2.setCursor(32 - (u8g2.getStrWidth("error") / 2), 62);
   u8g2.print("error");
   dialogbox.dialog_box("Ok&", 72, 1);
+
+}
+void UI_batlow()
+{
+
+  u8g2.setFont(u8g2_font_crox2h_tr);
+  u8g2.setCursor(4, 64);
+  u8g2.print("Batlow");
+}
+void UI_InfBatChK()
+{
+
+  u8g2.setFont(u8g2_font_crox2h_tr);
+  u8g2.setCursor(4, 64);
+  u8g2.print("lowbat");
+  dialogbox1.dialog_box("Ok&", 72, 1);
+
+}
+void UI_batchk()
+{
+
+  u8g2.setFont(u8g2_font_crox2h_tr);
+  u8g2.setCursor(4, 64);
+  u8g2.print("Batlow");
+
+}
+void UI_batfull()
+{
+
+  u8g2.setFont(u8g2_font_crox2h_tr);
+  u8g2.setCursor(4, 64);
+  u8g2.print("BatFull");
 
 }

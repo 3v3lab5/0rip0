@@ -21,6 +21,7 @@ int _Tvol;
 int _Infvol;
 long _Dcount;
 int _rTime;
+int _tTime;
 int _monCount;
 unsigned long int smooth(unsigned long int,float,unsigned long int);
 
@@ -34,10 +35,9 @@ int getRate();
 int  getRateMl();
 int getvolInf();
 int getrate2set();
-
 long getDcount();
 int getRtime();
-
+int getTtime();
 String getName();
 String getMed();
 String getMedName();

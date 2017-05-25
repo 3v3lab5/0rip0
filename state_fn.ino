@@ -29,10 +29,10 @@ void menu_1()
     case 3:  state = 3;
       break;
     case 1 : //WiFi.forceSleepWake();
-              if (WiFi.status() == WL_CONNECTED)
-              { if (mqttClient.connected()) {
+      if (WiFi.status() == WL_CONNECTED)
+      { if (mqttClient.connected()) {
           DataStatus = "df";
-         //           state = 5;
+          //           state = 5;
 
         }
         else {
@@ -54,8 +54,8 @@ void menu_1()
 void menu_2()
 {
 
- dot_x = 14;
- 
+  dot_x = 14;
+
   if (ui_x < 64)
   {
     ui_x = ui_x + 32;
@@ -86,7 +86,7 @@ void menu_2()
 
 void menu_3()
 {
-   dot_x = 28;
+  dot_x = 28;
 
   if (ui_x < 128)
   {
@@ -134,9 +134,9 @@ void M_setup()
         if (WiFi.status() == WL_CONNECTED)
         {
 
-        ui_state = 5;
-        state = 8;
-       }
+          ui_state = 5;
+          state = 8;
+        }
       }
       else  if (Setup.getSelect() == "system") {
         ui_state = 10;
@@ -162,8 +162,8 @@ void M_pwroff()
 
         u8g2.setPowerSave(1);
         system_deep_sleep_set_option(2);
-         system_deep_sleep(0);
-       //        yield();
+        system_deep_sleep(0);
+        //        yield();
         delay(500);
       }
       break;
@@ -176,14 +176,14 @@ void M_pwroff()
 
 void update_dripo()
 {
-//  if(WiFi.status() != WL_CONNECTED) {
-//   
-//  wifi_fpm_do_wakeup();
-//  wifi_fpm_close();
-//   delay(5000);
-//  
-//  }
-    ESPhttpUpdate.update("http://evelabs.co/Drip0.ino.nodemcu.bin");
+  //  if(WiFi.status() != WL_CONNECTED) {
+  //
+  //  wifi_fpm_do_wakeup();
+  //  wifi_fpm_close();
+  //   delay(5000);
+  //
+  //  }
+  ESPhttpUpdate.update("http://evelabs.co/Drip0.ino.nodemcu.bin");
 
 }
 
@@ -338,3 +338,34 @@ void ServErr()
 
   }
 }
+void batlowoff()
+{
+  if (logo_time > 3500)
+  {
+    u8g2.setPowerSave(1);
+    system_deep_sleep_set_option(2);
+    system_deep_sleep(0);
+    delay(500);
+  }
+}
+void Infbatchk()
+{
+  switch (get_button())
+  {
+    case 1: if (dialogbox1.getDia() == "Ok") {
+           ui_state = 3;
+            state = 9;
+
+      }
+      break;
+  }
+}
+void Batchk()
+{
+  if (logo_time > 3500)
+  {
+    ui_state=prev_ui_state;
+    state=prev_state;
+  }
+}
+

@@ -171,3 +171,10 @@ int DROP::getRtime()
   return _rTime;
 }
 
+
+int DROP::getTtime()
+{
+  _tTime = ((float)(_Tvol) / _rate2set)*60;
+  return _tTime;
+}
+
