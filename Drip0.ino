@@ -2,7 +2,7 @@
 #include <ArduinoJson.h>
 #include <Wire.h>
 #include "MENU.h"
-#include"DROP.h"
+#include "DROP.h"
 #include "MAX17043.h"
 #include <ESP8266HTTPClient.h>
 #include <ESP8266httpUpdate.h>
@@ -30,7 +30,6 @@ boolean batchkflag = false;
 //#define ENCODER_PINB     2
 //#define ENCODER_BTN      4
 //#define DROP_PIN        5
-
 #define ENCODER_PINA     5
 #define ENCODER_PINB     13
 #define ENCODER_BTN      4
@@ -40,6 +39,7 @@ boolean batchkflag = false;
 #define ADC_PIN        A0
 int state = 0;
 int prev_state = 0;
+int prev_b_state = 0;
 int ui_state = 0;
 int prev_ui_state = 0;
 int ui_x = 0;
@@ -119,8 +119,7 @@ void setup() {
   Wire.write(byte(0x64));
   //   //byte x = Wire.read(); // sends potentiometer value byte
 
-//  stateOfCharge = batteryMonitor.getSoC();
-  stateOfCharge=100;
+ stateOfCharge = batteryMonitor.getSoC();
   if (stateOfCharge < 10)
   {
     ui_state = 12;
@@ -148,7 +147,8 @@ void setup() {
   batteryMonitor.quickStart();
   logo_time = 0;
   ticker.attach(60, ticker_handler);
-
+ESP.wdtDisable();
+ESP.wdtEnable(WDTO_8S);
 }
 
 

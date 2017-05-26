@@ -365,7 +365,7 @@ void Batchk()
   if (logo_time > 3500)
   {
     ui_state=prev_ui_state;
-    state=prev_state;
+    state=prev_b_state;
   }
 }
 

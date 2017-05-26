@@ -18,7 +18,7 @@ void STBAR()
       {
         logo_time=0;
         prev_ui_state=ui_state;
-        prev_state=state;
+        prev_b_state=state;
         ui_state=15;
         state=17;
         batchkflag=true;
@@ -56,7 +56,7 @@ void STBAR()
       if (stateOfCharge < 15 && batchkflag==false)
       {
         logo_time =0;
-        prev_state = state;
+        prev_b_state = state;
         prev_ui_state=ui_state;
         ui_state = 14;
         state = 17;
