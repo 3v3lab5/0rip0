@@ -53,8 +53,7 @@ int wifi_connect(int WIFI_STATE)
     //  wifiManager.addParameter(&custom_mqtt_port);
     //  mqtt_server = custom_mqtt_server.getValue();
 
-    mqttClient.setServer(mqtt_server, mqtt_port);
-    mqttClient.setCallback(callback);
+
     // void configModeCallback (WiFiManager *myWiFiManager);
     //wifiManager.setAPCallback(configModeCallback);
 
@@ -66,22 +65,7 @@ int wifi_connect(int WIFI_STATE)
 
     if ( WiFi.status() == WL_CONNECTED ) {
 
-      mqttClient.connect(id);
-      // sprintf(up_channel, mqtt_channel_update, id);
-      // mqttClient.subscribe(up_channel);
-      mqttClient.publish("active", id);
-      sprintf(r_channel_df, mqtt_channel_df, id);
-      sprintf(r_channel_pat, mqtt_channel_pat, id);
-      sprintf(r_channel_version, mqtt_channel_version, id);
-      sprintf(r_channel_update, mqtt_channel_update, id);
-      mqttClient.subscribe(r_channel_pat);
-      mqttClient.subscribe(r_channel_version);
-      mqttClient.subscribe(r_channel_update);
-      mqttClient.subscribe(r_channel_df);
-      sprintf(r_channel_med, mqtt_channel_med, id);
-      mqttClient.subscribe(r_channel_med);
-      sprintf(r_channel_rate, mqtt_channel_r2set, id);
-      mqttClient.subscribe(r_channel_rate);
+mqtt_reconnect();
       return 2;
     }
 
@@ -149,22 +133,8 @@ int wifi_connect(int WIFI_STATE)
     configFile.close();
 
 
-    mqttClient.setServer(mqtt_server, mqtt_port);
-    mqttClient.setCallback(callback);
-    mqttClient.connect(id);
-    // sprintf(up_channel, mqtt_channel_update, id);
-    // mqttClient.subscribe(up_channel);
-    sprintf(r_channel_med, mqtt_channel_med, id);
-    mqttClient.subscribe(r_channel_med);
+ mqtt_reconnect();
 
-    mqttClient.publish("active", id);
-    sprintf(r_channel_df, mqtt_channel_df, id);
-    sprintf(r_channel_pat, mqtt_channel_pat, id);
-    mqttClient.subscribe(r_channel_pat);
-
-    mqttClient.subscribe(r_channel_df);
-    sprintf(r_channel_rate, mqtt_channel_r2set, id);
-    mqttClient.subscribe(r_channel_rate);
     return 2;
   }
   else  if (WIFI_STATE == 5)
@@ -206,22 +176,8 @@ int wifi_connect(int WIFI_STATE)
 
     }//}
 
-    mqttClient.setServer(mqtt_server, mqtt_port);
+mqtt_reconnect();
 
-    yield() ;
-    mqttClient.connect(id);
-    // sprintf(up_channel, mqtt_channel_update, id);
-    // mqttClient.subscribe(up_channel);
-    mqttClient.publish("active", id);
-    sprintf(r_channel_df, mqtt_channel_df, id);
-    sprintf(r_channel_pat, mqtt_channel_pat, id);
-    mqttClient.subscribe(r_channel_pat);
-
-    mqttClient.subscribe(r_channel_df);
-    sprintf(r_channel_med, mqtt_channel_med, id);
-    mqttClient.subscribe(r_channel_med);
-    sprintf(r_channel_rate, mqtt_channel_r2set, id);
-    mqttClient.subscribe(r_channel_rate);
     return 2;
   }
 }

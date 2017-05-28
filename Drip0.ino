@@ -13,6 +13,7 @@
 #include <PubSubClient.h>
 #include <elapsedMillis.h>
 #include <Ticker.h>
+#include "icons.h"
 
 elapsedMillis timeElapsed, logo_time, idle_time; //dataTicker;
 MAX17043 batteryMonitor;
