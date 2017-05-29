@@ -63,15 +63,20 @@ int wifi_connect(int WIFI_STATE)
       return 2;
     }
 
-    if ( WiFi.status() == WL_CONNECTED ) {
 
-mqtt_reconnect();
-      return 2;
-    }
 
   }
   else if (WIFI_STATE == 2)
   {
+       if ( WiFi.status() == WL_CONNECTED ) {
+if (!mqttClient.connected()) {
+
+mqtt_reconnect();
+
+   }   
+   return 2;
+    }
+
     //    if(sleep==false)
     //{
     ////
@@ -132,9 +137,6 @@ mqtt_reconnect();
     json.printTo(configFile);
     configFile.close();
 
-
- mqtt_reconnect();
-
     return 2;
   }
   else  if (WIFI_STATE == 5)
@@ -175,8 +177,6 @@ mqtt_reconnect();
 
 
     }//}
-
-mqtt_reconnect();
 
     return 2;
   }
