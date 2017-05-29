@@ -71,7 +71,13 @@ int wifi_connect(int WIFI_STATE)
        if ( WiFi.status() == WL_CONNECTED ) {
 if (!mqttClient.connected()) {
 
-mqtt_reconnect();
+     if(lastReconnectAttempt<=3){
+       // Attempt to reconnect
+      lastReconnectAttempt++;
+      if (mqtt_reconnect()) {
+        lastReconnectAttempt = 0;
+      }
+     }
 
    }   
    return 2;
