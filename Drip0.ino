@@ -52,7 +52,7 @@ int MonState = 0;
 int PMonState = 0;
 const char* VERSION = "0.8";
 String DataStatus = "nill";
-
+int lastReconnectAttempt = 0;
 #include <U8g2lib.h>
 //U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2(U8G2_R1, /* clock=*/ 13, /* data=*/12, /* cs=*/ 1, /* dc=*/ 10, /* reset=*/ 14);
 //U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2(U8G2_R1, /* clock=*/ 1, /* data=*/2, /* cs=*/ 10, /* dc=*/ 15, /* reset=*/ U8X8_PIN_NONE);
