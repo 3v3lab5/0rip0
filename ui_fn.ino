@@ -105,16 +105,7 @@ void UI_Rate()
 
       sendRate();
     }
-    if (_dripo.MonRate() == 1 && notified == false)
-    {
-      Notifier(200);                                 ///error code 200
-      notified = true;
-    }
-    else if (_dripo.MonRate() == 0 && notified == true)
-    {
-      Notifier(100);                                 //ok code 100
-      notified = false;
-    }
+   
   }
 }
 
