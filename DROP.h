@@ -1,6 +1,13 @@
 #ifndef DROP_H
 #define DROP_H
 #include "Arduino.h"
+#define   BLOCK     405
+#define   EMPTY     404
+#define   RATE_ERR  406
+#define   NO_ERR    100 
+#define   COMPLETED   101 
+#define   MON_RANGE  10
+#define   ALERT_PERCENT       0.2
 
 class DROP
 {
@@ -18,6 +25,7 @@ String _Name;
 String _MedName;
 
 int _Tvol;
+int _RemVol;
 int _Infvol;
 long _Dcount;
 int _rTime;
@@ -29,11 +37,14 @@ public:
 
 long _rate;
 unsigned long int  _Etime;
+unsigned long int  _LastEtime;
+
 
 void setTime(unsigned long int);
 int getRate();
 int  getRateMl();
 int getvolInf();
+int getvolRem();
 int getrate2set();
 long getDcount();
 int getRtime();
@@ -57,8 +68,10 @@ void setTvol(String);
 void setR2set(String);
 void setAlrt(String);
 int MonRate();
-//void setAlert();
- 
+int  Alert(unsigned long int);
+int getAlertPercent() ;
+int getAlertDrops();
+int getR2setDPM();
 };
 
 

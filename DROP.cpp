@@ -33,6 +33,12 @@ int DROP::getvolInf()
   return _Infvol;
 }
 
+int DROP::getvolRem()
+{
+  _RemVol = (getvolInf() - _Tvol);
+  return _RemVol;
+}
+
 long DROP::getDcount()
 {
   return _Dcount;
@@ -65,7 +71,7 @@ unsigned long int DROP::smooth(unsigned long int data, float filterVal, unsigned
 void DROP::setDf(String dpf)
 {
   _df = dpf.toInt();
-  _Dcount=0;
+  _Dcount = 0;
 }
 
 void DROP::setBed(String pat)
@@ -103,17 +109,17 @@ int DROP::MonRate()
 {
   int err;
   err = _rate2set - _rate_ml;
-  if (abs(err) < 10)
+  if (abs(err) < MON_RANGE)
   {
-   // if((_Dcount-_monCount)>=3)
-  //  {
+    // if((_Dcount-_monCount)>=3)
+    //  {
     return 1;
-  //  }
-  //  else
+    //  }
+    //  else
     //    return 0;
   }
   else {
-   // _monCount=_Dcount;
+    // _monCount=_Dcount;
     return 0;
   }
 }
@@ -122,6 +128,13 @@ int DROP::getrate2set()
 {
 
   return _rate2set;
+
+}
+
+int DROP::getR2setDPM()
+{
+
+  return (_rate2set*60/_df);
 
 }
 
@@ -167,14 +180,55 @@ int DROP::getDf()
 
 int DROP::getRtime()
 {
-  _rTime = ((float)(_Tvol - _Infvol) / _rate)*60;
+  _rTime = ((float)(_Tvol - _Infvol) / _rate) * 60;
   return _rTime;
 }
 
+int DROP::getAlertPercent()
+{
+  return (getrate2set()*ALERT_PERCENT);
+}
 
+int DROP::getAlertDrops()
+{
+  return (getR2setDPM()*ALERT_PERCENT);
+}
 int DROP::getTtime()
 {
-  _tTime = ((float)(_Tvol) / _rate2set)*60;
+  _tTime = ((float)(_Tvol) / _rate2set) * 60;
   return _tTime;
+}
+
+int DROP::Alert(unsigned long int _time)
+{
+    int err;
+  err = _rate2set - _rate_ml;
+  _LastEtime = _time;
+  if (_LastEtime > 20000000 && getRtime() > 4)
+  {
+    return BLOCK;
+  }
+
+  else  if (getvolRem() < 10 && getRtime() < 2)
+  {
+    return COMPLETED;
+  }
+
+  else  if (_LastEtime > 20000000 && getRtime() < 4)
+  {
+    return EMPTY;
+  }
+  else  if (abs(err)>getAlertPercent() && getRtime() > 3)
+  {
+    _monCount++;
+    if(_monCount>getAlertDrops()){
+          return RATE_ERR;
+
+    }
+  }
+  else {
+    _monCount=0;
+    return NO_ERR;
+  }
 }
 
