@@ -101,7 +101,15 @@ void UI_Rate()
     u8g2.setFont(u8g2_font_timR18_tn);
     u8g2.setCursor(0, 116);
     u8g2.print(_dripo.getvolInf());
-    if (ticker_reached) {
+ 
+int alt = _dripo.Alert(timeElapsed);
+
+if( alt != NO_ERR)
+{
+  sendAlert(alt);
+}
+  
+ else if (ticker_reached) {
 
       sendRate();
     }

@@ -134,7 +134,7 @@ int DROP::getrate2set()
 int DROP::getR2setDPM()
 {
 
-  return (_rate2set*60/_df);
+  return (_rate2set * 60 / _df);
 
 }
 
@@ -186,12 +186,12 @@ int DROP::getRtime()
 
 int DROP::getAlertPercent()
 {
-  return (getrate2set()*ALERT_PERCENT);
+  return (getrate2set() * ALERT_PERCENT);
 }
 
 int DROP::getAlertDrops()
 {
-  return (getR2setDPM()*ALERT_PERCENT);
+  return (getR2setDPM() * ALERT_PERCENT);
 }
 int DROP::getTtime()
 {
@@ -201,7 +201,7 @@ int DROP::getTtime()
 
 int DROP::Alert(unsigned long int _time)
 {
-    int err;
+  int err;
   err = _rate2set - _rate_ml;
   _LastEtime = _time;
   if (_LastEtime > 20000000 && getRtime() > 4)
@@ -218,16 +218,16 @@ int DROP::Alert(unsigned long int _time)
   {
     return EMPTY;
   }
-  else  if (abs(err)>getAlertPercent() && getRtime() > 3)
+  else  if (abs(err) > getAlertPercent() && getRtime() > 3)
   {
-    _monCount++;
-    if(_monCount>getAlertDrops()){
-          return RATE_ERR;
+   
+    if ((_Dcount-_monCount) > getAlertDrops()) {
+      return RATE_ERR;
 
     }
   }
   else {
-    _monCount=0;
+    _monCount = _Dcount;
     return NO_ERR;
   }
 }
