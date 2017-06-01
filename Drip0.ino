@@ -47,9 +47,10 @@ int ui_x = 0;
 int dot_x = 0;
 int wifi_status = 0;
 int BTN = 0;
-int infuseMenu = 0;
+int infuseMenu = 1;
 int MonState = 0;
 int PMonState = 0;
+int qos =1;
 const char* VERSION = "0.8";
 String DataStatus = "nill";
 int lastReconnectAttempt = 0;
@@ -114,13 +115,15 @@ PubSubClient mqttClient(wclient);
 void setup() {
 
   Wire.begin(2, 0);
-
+     Serial.begin(115200);
+       Serial.println("boot drip");
   Wire.beginTransmission(47); // transmit to device #20 (0x20)
   Wire.write(byte(0x10));// sends instruction byte
   Wire.write(byte(0x64));
   //   //byte x = Wire.read(); // sends potentiometer value byte
 
- stateOfCharge = batteryMonitor.getSoC();
+// stateOfCharge = batteryMonitor.getSoC();
+  stateOfCharge =100;
   if (stateOfCharge < 10)
   {
     ui_state = 12;

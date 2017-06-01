@@ -34,7 +34,8 @@ void UI_Menu()
 
   u8g2.drawXBM(8 - ui_x, 35, ic_opacity_black_24dp_width, ic_opacity_black_24dp_height, ic_opacity_black_24dp_bits);
   u8g2.setCursor(6 - ui_x, 100);
-  u8g2.print("INFUSE");
+//  u8g2.print("INFUSE");
+  u8g2.print(idle_time);
 
   u8g2.drawXBM(72 - ui_x, 35, ic_settings_black_24dp_width, ic_settings_black_24dp_height, ic_settings_black_24dp_bits);
   u8g2.setCursor(73 - ui_x, 100);
@@ -123,7 +124,7 @@ void UI_infuse()
         }
         else {
           _dripo.setDf(dpf.getSelect());
-          DataStatus = "bed";
+          DataStatus = "rate";
           //  infuseMenu = 1;
         }
         break;
@@ -141,7 +142,8 @@ void UI_infuse()
     {
       case 1: if (bed.getSelect() == "<<back")
         {
-          infuseMenu = 0;
+          state = 2;
+          ui_state = 2;
         }
         else {
           _dripo.setBed(bed.getSelect());
@@ -170,7 +172,7 @@ void UI_infuse()
         }
         else {
           _dripo.setMed(med.getSelect());
-          DataStatus = "rate";
+          DataStatus = "df";
 
           //        infuseMenu = 3;
 
@@ -223,7 +225,7 @@ void UI_infuse()
           }
           else
           {
-      
+
             ui_state = 13;
             state = 16;
           }

@@ -1,6 +1,6 @@
 void STBAR()
 {
-
+   ESP.wdtFeed();
   if (state == 2 || state == 3 || state == 4 || state == 9 || state == 7 || state == 10 || infuseMenu == 3 || state == 17) {
     //   int stateOfCharge = batteryMonitor.getSoC();
     //u8g2.setDrawColor(2);
@@ -78,7 +78,7 @@ void STBAR()
     {
       sleeper = true;
       prev_state = state;
-      state = 11;
+     state = 11;
     }
     sleep = false;
     if (WiFi.status() == WL_CONNECTED)
