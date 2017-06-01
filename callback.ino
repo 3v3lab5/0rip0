@@ -1,11 +1,12 @@
 void callback(char* topic, byte* payload, unsigned int length) {
-  payload[length] = '\0';
 
-  if (strcmp(topic, r_channel_df) == 0)
+ payload[length] = '\0';
+
+  if (strcmp((char*)topic, r_channel_df) == 0)
   {
     char *d_f = (char*)payload;
     dpf = MENU ("Dpf", d_f, u8g2);
-    state = 5;
+   infuseMenu = 0;
 
 
   }
@@ -13,7 +14,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   {
     char *b_d = (char*)payload;
     bed = MENU("Bed", b_d, u8g2);
-    infuseMenu = 1;
+     state = 5;
   }
   else if (strcmp(topic, r_channel_med) == 0)
   {

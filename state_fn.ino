@@ -31,7 +31,7 @@ void menu_1()
     case 1 : //WiFi.forceSleepWake();
       if (WiFi.status() == WL_CONNECTED)
       { if (mqttClient.connected()) {
-          DataStatus = "df";
+          DataStatus = "bed";
           //           state = 5;
 
         }
@@ -284,6 +284,7 @@ void WifiConf()
 
 void Sleep()
 {
+  idle_time = 0;
   u8g2.setPowerSave(1);
   switch (get_button())
   {

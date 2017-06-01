@@ -12,13 +12,10 @@ int wifi_connect(int WIFI_STATE)
   if (WIFI_STATE == 1)
   {
     if (SPIFFS.begin()) {
-      // Serial.println("mounted file system");
       if (SPIFFS.exists("/config.json")) {
         //file exists, reading and loading
-        //   Serial.println("reading config file");
         File configFile = SPIFFS.open("/config.json", "r");
         if (configFile) {
-          //  Serial.println("opened config file");
           size_t size = configFile.size();
           // Allocate a buffer to store contents of the file.
           std::unique_ptr<char[]> buf(new char[size]);
@@ -26,12 +23,9 @@ int wifi_connect(int WIFI_STATE)
           configFile.readBytes(buf.get(), size);
           DynamicJsonBuffer jsonBuffer;
           JsonObject& json = jsonBuffer.parseObject(buf.get());
-          //   json.printTo(Serial);
           if (json.success()) {
-            //    Serial.println("\nparsed json");
 
             strcpy(mqtt_server, json["mqtt_server"]);
-            //   strcpy(mqtt_port, json["mqtt_port"]);
 
           } else {
             //   Serial.println("failed to load json config");
@@ -42,46 +36,37 @@ int wifi_connect(int WIFI_STATE)
       Serial.println("failed to mount FS");
     }
 
-    // WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
-    // WiFiManagerParameter custom_mqtt_port("port", "mqtt port", mqtt_port, 6);
     WiFiManager wifiManager;
     //  wifiManager.setSaveConfigCallback(saveConfigCallback);
     wifiManager.setConnectTimeout(10);
     wifiManager.setConfigPortalTimeout(1);
-    // WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
-    //  wifiManager.addParameter(&custom_mqtt_server);
-    //  wifiManager.addParameter(&custom_mqtt_port);
-    //  mqtt_server = custom_mqtt_server.getValue();
-
-
-    // void configModeCallback (WiFiManager *myWiFiManager);
-    //wifiManager.setAPCallback(configModeCallback);
-
+    
     if (!wifiManager.autoConnect(id)) {
 
       WiFi.mode(WIFI_OFF);
       return 2;
     }
 
-
+       if ( WiFi.status() == WL_CONNECTED ) {
+        mqtt_reconnect();}
+      return 2;
 
   }
   else if (WIFI_STATE == 2)
   {
-       if ( WiFi.status() == WL_CONNECTED ) {
-if (!mqttClient.connected()) {
-
-     if(lastReconnectAttempt<=3){
-       // Attempt to reconnect
-      lastReconnectAttempt++;
-      if (mqtt_reconnect()) {
-        lastReconnectAttempt = 0;
-      }
-     }
-
-   }   
-   return 2;
-    }
+//       if ( WiFi.status() == WL_CONNECTED ) {
+//        if (!mqttClient.connected()) {
+//          if(lastReconnectAttempt<=3){
+//            // Attempt to reconnect
+//            lastReconnectAttempt++;
+//            if (mqtt_reconnect()) {
+//            lastReconnectAttempt = 0;
+//      }
+//     }
+//
+//   }   
+//  // return 2;
+//   }
 
     //    if(sleep==false)
     //{
@@ -92,7 +77,7 @@ if (!mqttClient.connected()) {
     //delay(500);
     //sleep = true;
     //}
-    return 2;
+   // return 2;
 
   }
 
