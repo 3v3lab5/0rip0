@@ -54,6 +54,7 @@ void UI_Menu()
 void UI_Rate()
 
 {
+  analogWriteFreq(38000);
   analogWrite(IR_PIN, 512);
   u8g2.setDrawColor(1);
   String txt;
