@@ -25,8 +25,9 @@ LOADER::~LOADER()   ///default distructor
 void LOADER::hotspot(){
   if(!speedinc)speedinc=.6;
   r=r+speedinc;
-   _u8g2.drawCircle(32,50,r, U8G2_DRAW_ALL);
-   if(r>outRad)r=0;
+   _u8g2.drawCircle(32,67,r, U8G2_DRAW_UPPER_RIGHT);
+     _u8g2.drawCircle(32,67,r, U8G2_DRAW_LOWER_LEFT);
+ if(r>outRad)r=0;
 
 }
 
