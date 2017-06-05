@@ -248,7 +248,7 @@ void Sho_Rate()
           }
           state = 2;
           ui_state = 2;
-          infuseMenu = 0;
+          infuseMenu = 1;
           MonState = 0;
         }
         break;
