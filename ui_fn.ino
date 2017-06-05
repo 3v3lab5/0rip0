@@ -19,7 +19,8 @@ void UI_Wifi()
   u8g2.print("to Wi-Fi");
   u8g2.setCursor(7, 67);
   u8g2.print("network");
-  u8g2.drawXBM( 20, 85, wifi_01_width, wifi_01_height, wifi_01_bits);
+ 
+//  u8g2.drawXBM( 20, 85, wifi_01_width, wifi_01_height, wifi_01_bits);
 
 
 
@@ -35,7 +36,7 @@ void UI_Menu()
   u8g2.drawXBM(8 - ui_x, 35, ic_opacity_black_24dp_width, ic_opacity_black_24dp_height, ic_opacity_black_24dp_bits);
   u8g2.setCursor(6 - ui_x, 100);
 //  u8g2.print("INFUSE");
-  u8g2.print(idle_time);
+u8g2.print(wifirssi);
 
   u8g2.drawXBM(72 - ui_x, 35, ic_settings_black_24dp_width, ic_settings_black_24dp_height, ic_settings_black_24dp_bits);
   u8g2.setCursor(73 - ui_x, 100);
@@ -127,8 +128,7 @@ void UI_infuse()
     switch (get_button())
     {
       case 1: if (dpf.getSelect() == "<<back") {
-          state = 2;
-          ui_state = 2;
+        infuseMenu = 2;
         }
         else {
           _dripo.setDf(dpf.getSelect());
@@ -222,7 +222,7 @@ void UI_infuse()
     switch (get_button())
     {
       case 1: if (dialogbox.getDia() == "No") {
-          infuseMenu = 2;
+          infuseMenu = 0;
 
         }
         else if (dialogbox.getDia() == "Yes") {
@@ -333,31 +333,34 @@ void UI_batlow()
 {
 
   u8g2.setFont(u8g2_font_crox2h_tr);
-  u8g2.setCursor(4, 64);
-  u8g2.print("Batlow");
+  u8g2.drawXBM( 8, 35,batlow_width,batlow_height,batlow_bits);
+  u8g2.setCursor(32 - ( u8g2.getStrWidth("BAT LOW")/ 2), 100);
+  u8g2.print("BAT LOW");
 }
 void UI_InfBatChK()
 {
 
   u8g2.setFont(u8g2_font_crox2h_tr);
-  u8g2.setCursor(4, 64);
-  u8g2.print("lowbat");
-  dialogbox1.dialog_box("Ok&", 72, 1);
+  u8g2.drawXBM( 8, 30,batlow_width,batlow_height,batlow_bits);
+  u8g2.setCursor(32 - ( u8g2.getStrWidth("BAT LOW")/ 2), 90);
+  u8g2.print("BAT LOW");
+  dialogbox1.dialog_box("Ok&", 100, 1);
 
 }
 void UI_batchk()
 {
 
   u8g2.setFont(u8g2_font_crox2h_tr);
-  u8g2.setCursor(4, 64);
-  u8g2.print("Batlow");
+  u8g2.drawXBM( 8, 35,batlow_width,batlow_height,batlow_bits);
+  u8g2.setCursor(32 - ( u8g2.getStrWidth("BAT LOW")/ 2), 100);
+  u8g2.print("BAT LOW");
 
 }
 void UI_batfull()
 {
 
   u8g2.setFont(u8g2_font_crox2h_tr);
-  u8g2.setCursor(4, 64);
-  u8g2.print("BatFull");
-
+  u8g2.drawXBM( 8, 35,batfull_width,batfull_height,batfull_bits);
+  u8g2.setCursor(32 - ( u8g2.getStrWidth("BAT FULL")/ 2), 100);
+  u8g2.print("BAT FULL");
 }

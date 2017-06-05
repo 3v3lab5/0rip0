@@ -2,6 +2,7 @@
 #include <ArduinoJson.h>
 #include <Wire.h>
 #include "MENU.h"
+#include "LOADER.h"
 #include "DROP.h"
 #include "MAX17043.h"
 #include <ESP8266HTTPClient.h>
@@ -18,8 +19,8 @@
 elapsedMillis timeElapsed, logo_time, idle_time; //dataTicker;
 MAX17043 batteryMonitor;
 Ticker ticker;
-
-float stateOfCharge;
+float wifirssi;
+int stateOfCharge;
 float cellVoltage;
 boolean startDisplay = false;
 boolean sleep = true;
@@ -51,6 +52,7 @@ int infuseMenu = 1;
 int MonState = 0;
 int PMonState = 0;
 int qos =1;
+int radius=5;
 const char* VERSION = "0.8";
 String DataStatus = "nill";
 int lastReconnectAttempt = 0;
@@ -58,7 +60,7 @@ int lastReconnectAttempt = 0;
 //U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2(U8G2_R1, /* clock=*/ 13, /* data=*/12, /* cs=*/ 1, /* dc=*/ 10, /* reset=*/ 14);
 //U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2(U8G2_R1, /* clock=*/ 1, /* data=*/2, /* cs=*/ 10, /* dc=*/ 15, /* reset=*/ U8X8_PIN_NONE);
 //U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI u8g2(U8G2_R1, /* clock=*/ 1, /* data=*/2, /* cs=*/ 10,/* reset=*/ U8X8_PIN_NONE);
-U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI u8g2(U8G2_R3, /* clock=*/ 1, /* data=*/2, /* cs=*/ 10);
+U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI u8g2(U8G2_R3, /* clock=*/ 1, /* data=*/3, /* cs=*/ 10);
 
 
 //char *d_f = "<<back*60*20*\0";n
@@ -70,6 +72,11 @@ MENU bed;
 MENU med;
 MENU dialogbox(u8g2);
 MENU dialogbox1(u8g2);
+LOADER load(4,15,u8g2);
+LOADER hotspot(10,u8g2);
+LOADER hotspot1(15,u8g2);
+LOADER hotspot2(20,u8g2);
+
 DROP _dripo;
 
 char id[30];
@@ -122,8 +129,8 @@ void setup() {
   Wire.write(byte(0x64));
   //   //byte x = Wire.read(); // sends potentiometer value byte
 
-// stateOfCharge = batteryMonitor.getSoC();
-  stateOfCharge =100;
+ stateOfCharge = batteryMonitor.getSoC();
+//  stateOfCharge =13;
   if (stateOfCharge < 10)
   {
     ui_state = 12;

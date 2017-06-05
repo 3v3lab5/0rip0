@@ -40,33 +40,35 @@ int wifi_connect(int WIFI_STATE)
     //  wifiManager.setSaveConfigCallback(saveConfigCallback);
     wifiManager.setConnectTimeout(10);
     wifiManager.setConfigPortalTimeout(1);
-    
+
+
     if (!wifiManager.autoConnect(id)) {
 
       WiFi.mode(WIFI_OFF);
       return 2;
     }
 
-       if ( WiFi.status() == WL_CONNECTED ) {
-        mqtt_reconnect();}
-      return 2;
+    if ( WiFi.status() == WL_CONNECTED ) {
+      mqtt_reconnect();
+    }
+    return 2;
 
   }
   else if (WIFI_STATE == 2)
   {
-//       if ( WiFi.status() == WL_CONNECTED ) {
-//        if (!mqttClient.connected()) {
-//          if(lastReconnectAttempt<=3){
-//            // Attempt to reconnect
-//            lastReconnectAttempt++;
-//            if (mqtt_reconnect()) {
-//            lastReconnectAttempt = 0;
-//      }
-//     }
-//
-//   }   
-//  // return 2;
-//   }
+    //       if ( WiFi.status() == WL_CONNECTED ) {
+    //        if (!mqttClient.connected()) {
+    //          if(lastReconnectAttempt<=3){
+    //            // Attempt to reconnect
+    //            lastReconnectAttempt++;
+    //            if (mqtt_reconnect()) {
+    //            lastReconnectAttempt = 0;
+    //      }
+    //     }
+    //
+    //   }
+    //  // return 2;
+    //   }
 
     //    if(sleep==false)
     //{
@@ -77,7 +79,7 @@ int wifi_connect(int WIFI_STATE)
     //delay(500);
     //sleep = true;
     //}
-   // return 2;
+    // return 2;
 
   }
 
@@ -175,38 +177,33 @@ int wifi_connect(int WIFI_STATE)
 
 
 void configModeCallback (WiFiManager *myWiFiManager) {
-   
 
-
-//  for(i=0;i<1000;i++)
-//  {  ESP.wdtFeed();
-//
-
-     u8g2.clearBuffer();
-    u8g2.setFont(u8g2_font_profont10_tf);
-    u8g2.setCursor(0, 47);
-    u8g2.print(myWiFiManager->getConfigPortalSSID());
-    u8g2.setCursor(0, 107);
-    u8g2.print("prss");
-          u8g2.sendBuffer();
-//  }
-
-
-
-  u8g2.setFont(u8g2_font_crox2h_tr);
-
-
+  
 }
+
+
+
 
 
 
 boolean funct(void)
 {
-   switch (get_button())
+  u8g2.clearBuffer();
+  u8g2.setFont(u8g2_font_crox2h_tr);
+  u8g2.drawXBM( 9, 32, hotspot_width, hotspot_height, hotspot_bits);
+  dialogbox1.dialog_box("Cancel&", 100, 1);
+
+   hotspot.hotspot();
+   hotspot1.hotspot();
+     hotspot2.hotspot();
+
+  u8g2.sendBuffer();
+  u8g2.setFont(u8g2_font_crox2h_tr);
+  switch (get_button())
   {
-   case 1:  return 1;
-     break;
+    case 1:  return 1;
+      break;
 
   }
- return NULL;
+  return NULL;
 }
