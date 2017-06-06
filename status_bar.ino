@@ -3,24 +3,30 @@ void STBAR()
   ESP.wdtFeed();
   if (state == 2 || state == 3 || state == 4 || state == 9 || state == 7 || state == 10 || infuseMenu == 3 || state == 17) {
     //  stateOfCharge = batteryMonitor.getSoC();
-    stateOfCharge = 50;
-    int  widthCharge = map(stateOfCharge, 0, 100, 1, 15);
+    stateOfCharge = 25;
+    float  widthCharge = map(stateOfCharge, 0, 100, 1, 7.5);
     u8g2.drawXBM(42, 0, battery_width, battery_height, battery_bits);
-    u8g2.drawBox(44, 5, widthCharge, 5);
-    u8g2.drawLine(0, 11, 12, 11);
-    u8g2.drawLine(12, 11, 12, 0);
-    u8g2.drawLine(12, 0, 0, 11);
+    for(float i=0;i<=widthCharge;i++)
+    {
+       u8g2.drawLine(44+i*2, 5,44+i*2, 9);
+    }
+//    u8g2.drawBox(44, 5, widthCharge, 5);
+    
     wifirssi = WiFi.RSSI();
-    int  widthwifi = map(wifirssi, -95, 0, 1,12);
+    int  widthwifi = map(wifirssi, -95, 0, 1,4);
     if (WiFi.status() == WL_CONNECTED)
     {
     for(int i=0;i<=widthwifi;i++)
     {
-          u8g2.drawBox(i,12-i,1,i);  
-    }
+   u8g2.drawCircle(0,11,i*3, U8G2_DRAW_UPPER_RIGHT);
+   }
+
     }
     else{
-      
+     //add wifi no connection icon here 
+   u8g2.drawXBM(0,0 , nowifi_width, nowifi_height, nowifi_bits);
+
+    
     }
     if (stateOfCharge > 85) {
       if (stateOfCharge == 100 && batchkflag == false)

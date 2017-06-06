@@ -19,8 +19,7 @@ void UI_Wifi()
   u8g2.print("to Wi-Fi");
   u8g2.setCursor(7, 67);
   u8g2.print("network");
- 
-//  u8g2.drawXBM( 20, 85, wifi_01_width, wifi_01_height, wifi_01_bits);
+  u8g2.drawXBM( 20, 85, wifi_01_width, wifi_01_height, wifi_01_bits);
 
 
 
@@ -35,8 +34,8 @@ void UI_Menu()
 
   u8g2.drawXBM(8 - ui_x, 35, ic_opacity_black_24dp_width, ic_opacity_black_24dp_height, ic_opacity_black_24dp_bits);
   u8g2.setCursor(6 - ui_x, 100);
-//  u8g2.print("INFUSE");
-u8g2.print(wifirssi);
+  u8g2.print("INFUSE");
+  
 
   u8g2.drawXBM(72 - ui_x, 35, ic_settings_black_24dp_width, ic_settings_black_24dp_height, ic_settings_black_24dp_bits);
   u8g2.setCursor(73 - ui_x, 100);
