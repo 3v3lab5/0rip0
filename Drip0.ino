@@ -1,9 +1,11 @@
 #include <FS.h>
 #include <ArduinoJson.h>
 #include <Wire.h>
-#include "MENU.h"
-#include "LOADER.h"
-#include "DROP.h"
+#include "src/MENU.h"
+//#include "src/ICON.h"
+//#include "src/MAINMENU.h"
+#include "src/LOADER.h"
+#include "src/DROP.h"
 #include "MAX17043.h"
 #include <ESP8266HTTPClient.h>
 #include <ESP8266httpUpdate.h>
@@ -14,7 +16,7 @@
 #include <PubSubClient.h>
 #include <elapsedMillis.h>
 #include <Ticker.h>
-#include "icons.h"
+#include "src/icons.h"
 
 elapsedMillis timeElapsed, logo_time, idle_time; //dataTicker;
 MAX17043 batteryMonitor;
@@ -66,7 +68,6 @@ U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI u8g2(U8G2_R3, /* clock=*/ 1, /* data=*/3,
 //char *d_f = "<<back*60*20*\0";n
 char *s_up = "wifi conf&wifi conf&update&update&system&system\0";
 MENU Setup("Setup", s_up, u8g2);
-
 MENU dpf;
 MENU bed;
 MENU med;
