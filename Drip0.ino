@@ -1,9 +1,9 @@
 #include <FS.h>
 #include <ArduinoJson.h>
 #include <Wire.h>
-#include "MENU.h"
-#include "LOADER.h"
-#include "DROP.h"
+#include "src/MENU.h"
+#include "src/LOADER.h"
+#include "src/DROP.h"
 #include "MAX17043.h"
 #include <ESP8266HTTPClient.h>
 #include <ESP8266httpUpdate.h>
@@ -14,7 +14,7 @@
 #include <PubSubClient.h>
 #include <elapsedMillis.h>
 #include <Ticker.h>
-#include "icons.h"
+#include "src/icons.h"
 
 elapsedMillis timeElapsed, logo_time, idle_time; //dataTicker;
 MAX17043 batteryMonitor;
@@ -23,7 +23,7 @@ float wifirssi;
 int stateOfCharge;
 float cellVoltage;
 boolean startDisplay = false;
-boolean sleep = true;
+boolean sleep = false;
 boolean ticker_reached;
 boolean sleeper = false;
 boolean notified = false;
@@ -122,13 +122,15 @@ PubSubClient mqttClient(wclient);
 void setup() {
 
   Wire.begin(2, 0);
-     Serial.begin(115200);
-       Serial.println("boot drip");
+    Serial.begin(115200);
+
+     Serial.println("boot drip");
+       
   Wire.beginTransmission(47); // transmit to device #20 (0x20)
   Wire.write(byte(0x10));// sends instruction byte
   Wire.write(byte(0x64));
   //   //byte x = Wire.read(); // sends potentiometer value byte
-
+//Serial1.setDebugOutput(true);
  stateOfCharge = batteryMonitor.getSoC();
 //  stateOfCharge =13;
   if (stateOfCharge < 10)
@@ -159,7 +161,7 @@ void setup() {
   logo_time = 0;
   ticker.attach(60, ticker_handler);
 ESP.wdtDisable();
-ESP.wdtEnable(WDTO_8S);
+ESP.wdtEnable(WDTO_500MS);
 }
 
 

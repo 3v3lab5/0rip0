@@ -76,7 +76,7 @@ void STBAR()
       prev_state = state;
       state = 11;
     }
-    sleep = false;
+   // sleep = false;
 //    if (WiFi.status() == WL_CONNECTED)
 //    {
 //
