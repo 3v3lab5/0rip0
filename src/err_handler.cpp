@@ -12,10 +12,16 @@ ERR= alt;
  {
 	_u8g2.setFont(u8g2_font_crox2h_tr);
 _u8g2.setCursor(0,92);
-_u8g2.print("Err");
-_u8g2.setCursor(30,92);
-_u8g2.print(ERR);
+if(ERR==405) {
+	_u8g2.print("Block");
 
+}
+else if(ERR==404) {
+	_u8g2.print("Empty");
+}
+else if(ERR=406) {
+_u8g2.print("Rate Err");
+}
  }
 
 }
