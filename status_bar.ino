@@ -67,7 +67,7 @@ void STBAR()
     }
 
     if (MonState == 3 || (PMonState == 3 && MonState == 1)) {
-      u8g2.drawXBM(1, -1, monitor_width, monitor_height, monitor_bits);
+      u8g2.drawXBM(15, -1, monitor_width, monitor_height, monitor_bits);
     }
 
     if (idle_time > 120000 && sleeper == false)

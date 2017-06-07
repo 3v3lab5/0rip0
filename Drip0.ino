@@ -1,6 +1,8 @@
 #include <FS.h>
 #include <ArduinoJson.h>
+
 #include <Wire.h>
+#include"src/err_handler.h"
 #include "src/MENU.h"
 <<<<<<< HEAD
 //#include "src/ICON.h"
@@ -44,6 +46,7 @@ boolean batchkflag = false;
 #define WAKE_PIN        16
 #define IR_PIN        12
 #define ADC_PIN        A0
+int altmsg=NO_ERR;
 int state = 0;
 int prev_state = 0;
 int prev_b_state = 0;
@@ -83,6 +86,7 @@ LOADER hotspot2(20,u8g2);
 
 DROP _dripo;
 
+ERR_HANDLER _errAlert(u8g2);
 char id[30];
 
 //subscribe

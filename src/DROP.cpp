@@ -204,7 +204,7 @@ int DROP::Alert(unsigned long int _time)
   int err;
   err = _rate2set - _rate_ml;
   _LastEtime = _time;
-  if (_LastEtime > 20000000 && getRtime() > 4)
+  if (_LastEtime > 200000 && getRtime() > 4)
   {
     return BLOCK;
   }
@@ -214,7 +214,7 @@ int DROP::Alert(unsigned long int _time)
     return COMPLETED;
   }
 
-  else  if (_LastEtime > 20000000 && getRtime() < 4)
+  else  if (_LastEtime > 200000 && getRtime() < 4)
   {
     return EMPTY;
   }
@@ -224,6 +224,10 @@ int DROP::Alert(unsigned long int _time)
     if ((_Dcount-_monCount) > getAlertDrops()) {
       return RATE_ERR;
 
+    }
+
+    else{
+	    return NO_ERR;
     }
   }
   else {

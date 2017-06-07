@@ -73,17 +73,17 @@ int wifi_connect(int WIFI_STATE)
 
     }
       //
-              if(sleep==false)
-          {
-      //
-    wifi_set_sleep_type(MODEM_SLEEP_T);
-           wifi_fpm_open();
-           wifi_fpm_do_sleep(16843455);
-           yield();
-        //  wifi_fpm_do_sleep(26843455);
-      //    delay(500);
-          sleep = true;
-     }
+//              if(sleep==false)
+//          {
+//      //
+//    wifi_set_sleep_type(MODEM_SLEEP_T);
+//           wifi_fpm_open();
+//           wifi_fpm_do_sleep(16843455);
+//           yield();
+//        //  wifi_fpm_do_sleep(26843455);
+//      //    delay(500);
+//          sleep = true;
+//     }
       //    return 2;
        return 2;
     }
