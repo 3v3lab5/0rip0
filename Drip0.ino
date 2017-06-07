@@ -2,6 +2,11 @@
 #include <ArduinoJson.h>
 #include <Wire.h>
 #include "src/MENU.h"
+<<<<<<< HEAD
+//#include "src/ICON.h"
+//#include "src/MAINMENU.h"
+=======
+>>>>>>> 7323f649fd9ed299714798e2625ce48af1bf2191
 #include "src/LOADER.h"
 #include "src/DROP.h"
 #include "MAX17043.h"
@@ -66,7 +71,6 @@ U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI u8g2(U8G2_R3, /* clock=*/ 1, /* data=*/3,
 //char *d_f = "<<back*60*20*\0";n
 char *s_up = "wifi conf&wifi conf&update&update&system&system\0";
 MENU Setup("Setup", s_up, u8g2);
-
 MENU dpf;
 MENU bed;
 MENU med;
