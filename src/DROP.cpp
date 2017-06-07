@@ -204,7 +204,7 @@ int DROP::Alert(unsigned long int _time)
   int err;
   err = _rate2set - _rate_ml;
   _LastEtime = _time;
-  if (_LastEtime > 200000 && getRtime() > 4)
+  if (_LastEtime > 20000 && getRtime() > 4)
   {
     return BLOCK;
   }
