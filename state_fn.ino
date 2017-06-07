@@ -196,7 +196,7 @@ void Sho_Rate()
   }
 
 
-  if (MonState == 0 || MonState == 3) {
+  if (MonState == 0 || (MonState == 3 && altmsg == NO_ERR)) {
 
 
     switch (get_button())
@@ -354,8 +354,8 @@ void Infbatchk()
   switch (get_button())
   {
     case 1: if (dialogbox1.getDia() == "Ok") {
-           ui_state = 3;
-            state = 9;
+        ui_state = 3;
+        state = 9;
 
       }
       break;
@@ -365,8 +365,8 @@ void Batchk()
 {
   if (logo_time > 3500)
   {
-    ui_state=prev_ui_state;
-    state=prev_b_state;
+    ui_state = prev_ui_state;
+    state = prev_b_state;
   }
 }
 

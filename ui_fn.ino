@@ -95,7 +95,10 @@ void UI_Rate()
   }
 
   else if (MonState == 3) {
+  altmsg = _dripo.Alert(timeElapsed);
 
+ if(altmsg==NO_ERR)
+ {
     u8g2.setCursor(0, 92);
     u8g2.print("Vol infusd");
     u8g2.setCursor(36, 128);
@@ -103,18 +106,26 @@ void UI_Rate()
     u8g2.setFont(u8g2_font_timR18_tn);
     u8g2.setCursor(0, 116);
     u8g2.print(_dripo.getvolInf());
- 
-int alt = _dripo.Alert(timeElapsed);
 
-if( alt != NO_ERR)
-{
-  sendAlert(alt);
-}
-  
- else if (ticker_reached) {
+     if (ticker_reached) {
 
       sendRate();
     }
+ }
+ else{
+  _errAlert.display_err(altmsg,false,false);
+   switch (get_button())
+
+    {
+      case 1:   MonState = 0;
+        break;
+
+    }
+  
+ }
+
+  
+
    
   }
 }
