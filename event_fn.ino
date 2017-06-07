@@ -1,5 +1,5 @@
 void checkButton() {
-  idle_time=0;
+  idle_time = 0;
   const unsigned long LONG_DELTA = 400ul;               // hold seconds for a long press
   const unsigned long DEBOUNCE_DELTA = 10ul;        // debounce time
   static int lastButtonStatus = HIGH;                                   // HIGH indicates the button is NOT pressed
@@ -24,20 +24,20 @@ void checkButton() {
 
 
   if (timeoutLong && Released) {                                      // long timeout has occurred and the button was just released
-BTN=2;  // long press
+    BTN = 2; // long press
   }
 
   else  if (timeoutShort && Released)                  // short timeout has occurred (and not long timeout) and button was just released
   {
-BTN=1; ///Short press
-}
+    BTN = 1; ///Short press
+  }
 }
 
-void encoder(){
-idle_time=0;
-volatile int lastEncoded = 0;
-unsigned int encoderValue = 1;
-unsigned int lastencoderValue = 1;
+void encoder() {
+  idle_time = 0;
+  volatile int lastEncoded = 0;
+  unsigned int encoderValue = 1;
+  unsigned int lastencoderValue = 1;
 
 
   // Read A and B signals
@@ -51,42 +51,37 @@ unsigned int lastencoderValue = 1;
   if (sum == 0b1110 || sum == 0b0111 || sum == 0b0001 || sum == 0b1000) encoderValue --;
 
   lastEncoded = encoded;
-if(encoderValue >lastencoderValue)
-{
-  BTN=3;
-  lastencoderValue=encoderValue;
-}
+  if (encoderValue > lastencoderValue)
+  {
+    BTN = 3;
+    lastencoderValue = encoderValue;
+  }
 
- if(encoderValue < lastencoderValue)
-{
-     BTN=4;
- lastencoderValue=encoderValue;
+  if (encoderValue < lastencoderValue)
+  {
+    BTN = 4;
+    lastencoderValue = encoderValue;
 
-}
+  }
 
 }
 void checkdrop()
 {
-  if (timeElapsed > 60) {
-    
-//    drip_rate = (long)60000 / (timeElapsed);
- //   _dripo._rate=(long)60000 / (timeElapsed);
-_dripo.setTime(timeElapsed);
+  if (timeElapsed > 143) {
+
+
+    _dripo.setTime(timeElapsed);
+    timeElapsed = 0;
 
   }
-//_dripo._Etime=timeElapsed;
-//drip_rate=(long)60000 / (timeElapsed);
-
-  timeElapsed = 0;
-
 
 }
 
 int get_button()
 {
   int button = BTN;
-  BTN=0;
+  BTN = 0;
   return button;
-  
+
 }
 

@@ -2,8 +2,11 @@
 #include <ArduinoJson.h>
 #include <Wire.h>
 #include "src/MENU.h"
+<<<<<<< HEAD
 //#include "src/ICON.h"
 //#include "src/MAINMENU.h"
+=======
+>>>>>>> 7323f649fd9ed299714798e2625ce48af1bf2191
 #include "src/LOADER.h"
 #include "src/DROP.h"
 #include "MAX17043.h"
@@ -25,7 +28,7 @@ float wifirssi;
 int stateOfCharge;
 float cellVoltage;
 boolean startDisplay = false;
-boolean sleep = true;
+boolean sleep = false;
 boolean ticker_reached;
 boolean sleeper = false;
 boolean notified = false;
@@ -57,7 +60,7 @@ int qos =1;
 int radius=5;
 const char* VERSION = "0.8";
 String DataStatus = "nill";
-int lastReconnectAttempt = 0;
+long lastReconnectAttempt = 0;
 #include <U8g2lib.h>
 //U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2(U8G2_R1, /* clock=*/ 13, /* data=*/12, /* cs=*/ 1, /* dc=*/ 10, /* reset=*/ 14);
 //U8G2_SSD1306_128X64_NONAME_F_4W_SW_SPI u8g2(U8G2_R1, /* clock=*/ 1, /* data=*/2, /* cs=*/ 10, /* dc=*/ 15, /* reset=*/ U8X8_PIN_NONE);
@@ -123,13 +126,15 @@ PubSubClient mqttClient(wclient);
 void setup() {
 
   Wire.begin(2, 0);
-     Serial.begin(115200);
-       Serial.println("boot drip");
+    Serial.begin(115200);
+
+     Serial.println("boot drip");
+       
   Wire.beginTransmission(47); // transmit to device #20 (0x20)
   Wire.write(byte(0x10));// sends instruction byte
   Wire.write(byte(0x64));
   //   //byte x = Wire.read(); // sends potentiometer value byte
-
+//Serial1.setDebugOutput(true);
  stateOfCharge = batteryMonitor.getSoC();
 //  stateOfCharge =13;
   if (stateOfCharge < 10)
@@ -160,7 +165,7 @@ void setup() {
   logo_time = 0;
   ticker.attach(60, ticker_handler);
 ESP.wdtDisable();
-ESP.wdtEnable(WDTO_8S);
+ESP.wdtEnable(WDTO_500MS);
 }
 
 

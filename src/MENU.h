@@ -32,7 +32,7 @@ class MENU
     void _diadwn();
     void display_menu();
     void dialog_box(char*,int,int);
-
+    
 };
 
 
