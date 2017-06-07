@@ -56,6 +56,7 @@ else if (strcmp(topic, r_channel_version) == 0)
 void ticker_handler() {
 
   ticker_reached = true;
+boolean sleep = false;
 
 
 }

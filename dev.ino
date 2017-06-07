@@ -33,7 +33,7 @@ int wifi_connect(int WIFI_STATE)
         }
       }
     } else {
-      Serial.println("failed to mount FS");
+      //Serial.println("failed to mount FS");
     }
 
     WiFiManager wifiManager;
@@ -56,6 +56,8 @@ int wifi_connect(int WIFI_STATE)
   }
   else if (WIFI_STATE == 2)
   {
+      ESP.wdtFeed();
+
     if ( WiFi.status() == WL_CONNECTED ) {
        if (!mqttClient.connected()) {
         long now = millis();
@@ -71,15 +73,17 @@ int wifi_connect(int WIFI_STATE)
 
     }
       //
-      //        if(sleep==false)
-      //    {
+              if(sleep==false)
+          {
       //
-      //    wifi_set_sleep_type(MODEM_SLEEP_T);
-      //     wifi_fpm_open();
-      //    wifi_fpm_do_sleep(26843455);
+    wifi_set_sleep_type(MODEM_SLEEP_T);
+           wifi_fpm_open();
+           wifi_fpm_do_sleep(16843455);
+           yield();
+        //  wifi_fpm_do_sleep(26843455);
       //    delay(500);
-      //    sleep = true;
-      //    }
+          sleep = true;
+     }
       //    return 2;
        return 2;
     }
