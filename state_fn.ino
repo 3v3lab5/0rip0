@@ -189,7 +189,6 @@ ESPhttpUpdate.update("http://evelabs.co/Drip0.ino.nodemcu.bin");
 
 void Sho_Rate()
 {
-<<<<<<< HEAD
   if (_dripo.MonRate() == 1 && MonState == 0)
   {
     PMonState = MonState;
@@ -206,29 +205,8 @@ void Sho_Rate()
       case 1:  PMonState = MonState;
         MonState = 1;
         break;
-=======
-if (_dripo.MonRate() == 1 && MonState == 0)
-{
-  PMonState = MonState;
-  MonState = 2;
 }
->>>>>>> master
-
-
-if (MonState == 0 || MonState == 3) {
-
-
-  switch (get_button())
-
-  {
-    case 1:  PMonState = MonState;
-      MonState = 1;
-      break;
-
   }
-
-
-}
 
 
 else if (MonState == 2) {
@@ -370,38 +348,22 @@ if (logo_time > 3500)
 }
 void Infbatchk()
 {
-<<<<<<< HEAD
   switch (get_button())
   {
     case 1: if (dialogbox1.getDia() == "Ok") {
         ui_state = 3;
         state = 9;
-=======
-switch (get_button())
-{
-  case 1: if (dialogbox1.getDia() == "Ok") {
-         ui_state = 3;
-          state = 9;
->>>>>>> master
-
     }
     break;
 }
 }
 void Batchk()
 {
-<<<<<<< HEAD
   if (logo_time > 3500)
   {
     ui_state = prev_ui_state;
     state = prev_b_state;
   }
-=======
-if (logo_time > 3500)
-{
-  ui_state=prev_ui_state;
-  state=prev_b_state;
-}
->>>>>>> master
+
 }
 

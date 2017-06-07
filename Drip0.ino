@@ -4,11 +4,6 @@
 #include <Wire.h>
 #include"src/err_handler.h"
 #include "src/MENU.h"
-<<<<<<< HEAD
-//#include "src/ICON.h"
-//#include "src/MAINMENU.h"
-=======
->>>>>>> 7323f649fd9ed299714798e2625ce48af1bf2191
 #include "src/LOADER.h"
 #include "src/DROP.h"
 #include "MAX17043.h"
