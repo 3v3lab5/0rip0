@@ -17,6 +17,8 @@ mqttClient.setCallback(callback);
     mqttClient.subscribe(r_channel_med,qos);
     sprintf(r_channel_rate, mqtt_channel_r2set, id);
     mqttClient.subscribe(r_channel_rate,qos);
+    sprintf(r_channel_staAck, mqtt_channel_staAck, id);
+    mqttClient.subscribe(r_channel_staAck,qos);
   }
   return mqttClient.connected();
 }

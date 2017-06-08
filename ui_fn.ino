@@ -113,11 +113,14 @@ void UI_Rate()
     }
  }
  else{
-  _errAlert.display_err(altmsg,false,false);
+ // _errAlert.display_err(altmsg,devAck,staAck,id,_dripo.getMed());
    switch (get_button())
 
     {
-      case 1:   MonState = 0;
+      case 1: devAck=true;
+	      DataStatus="dev_ack";
+	      MonState = 0;
+		
         break;
 
     }

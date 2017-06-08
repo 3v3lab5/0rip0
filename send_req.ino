@@ -56,7 +56,8 @@ String send_req(String Data)
     return "nill";
  } 
 
-    else if(Data=="stop")
+
+  else if(Data=="stop")
  { 
  //  String medi=Data+"-"+_dripo.getBed()+"-"+_dripo.getMed();
         String medi=_dripo.getMed()+"-"+Data;
@@ -66,6 +67,15 @@ String send_req(String Data)
     mqttClient.publish(pat_channel, chr);
     return "nill";
  }
+
+    else if(Data=="dev_ack")
+    {
+ String ack=_dripo.getMed()+"-"+Data;
+   const char* chr = ack.c_str();
+    sprintf(staAck_channel, mqtt_channel_devack, id);
+    mqttClient.publish(staAck_channel, chr);
+ return "nill";
+    }
 
     else if(Data=="ver")
  { 

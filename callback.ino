@@ -38,6 +38,16 @@ void callback(char* topic, byte* payload, unsigned int length) {
     infuseMenu = 3;
 
   }
+  else if (strcmp(topic, r_channel_staAck) == 0)
+  {
+    char *ack = (char*)payload;
+    if(strcmp(ack,"STA_ACK")==0)
+    {
+staAck=true;
+    }
+
+
+  }
 else if (strcmp(topic, r_channel_version) == 0)
   {
     char *ver = (char*)payload;
