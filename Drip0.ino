@@ -1,6 +1,5 @@
 #include <FS.h>
 #include <ArduinoJson.h>
-
 #include <Wire.h>
 #include"src/err_handler.h"
 #include "src/MENU.h"
@@ -30,6 +29,8 @@ boolean ticker_reached;
 boolean sleeper = false;
 boolean notified = false;
 boolean batchkflag = false;
+boolean staAck = false;
+boolean devAck = false;
 //#define ENCODER_PINA     0
 //#define ENCODER_PINB     2
 //#define ENCODER_BTN      4
@@ -92,17 +93,20 @@ char r_channel_med[50];
 char r_channel_rate[50];
 char r_channel_version[50];
 char r_channel_update[50];
+char r_channel_staAck[50];
 const char* mqtt_channel_version = "dripo/%s/version";               ///request from server for current version
 const char* mqtt_channel_update = "dripo/%s/update";                    /// request from server for update
 const char* mqtt_channel_df = "dripo/%s/df";          /// to recieve df details
 const char* mqtt_channel_pat = "dripo/%s/bed";                    /// to recieve patient list
 const char* mqtt_channel_med = "dripo/%s/med";                    /// to recieve med list
-const char* mqtt_channel_r2set = "dripo/%s/rate2set";          /// to recieve patient details
+const char* mqtt_channel_r2set = "dripo/%s/rate2set"; /// to recieve patient details
+const char* mqtt_channel_staAck= "dripo/%s/staAck";  /// to recieve patient details 
 
 //publish
 char pat_channel[50];
 char version_channel[50];
 char rate_channel[50];
+char staAck_channel[50];
 const char* mqtt_channel_myversion = "dripo/%s/myversion";                  ///to send current version
 const char* mqtt_channel_rate = "dripo/%s/rate";                  ///to send rate details
 const char* mqtt_channel_req = "dripo/%s/req";                  ///to send df details
@@ -111,7 +115,7 @@ const char* mqtt_channel_medreq = "dripo/%s/med_req";                  ///to sen
 const char* mqtt_channel_ratereq = "dripo/%s/rate_req";                  ///to send rate details
 const char* mqtt_channel_mon = "dripo/%s/mon";                  ///to send start/stop details
 const char* mqtt_channel_err = "dripo/%s/err";                  ///to send err details
-
+const char* mqtt_channel_devack = "dripo/%s/ack_dev";   		/// to publish dev ack 
 
 const int mqtt_port = 1883;
 //const char* mqtt_server = "192.168.0.13";

@@ -1,5 +1,0 @@
-void sendAlert(int altmsg)
-{
-
-}
-
