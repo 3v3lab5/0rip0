@@ -82,7 +82,6 @@ LOADER hotspot2(20,u8g2);
 
 DROP _dripo;
 
-ERR_HANDLER _errAlert(u8g2);
 char id[30];
 
 //subscribe
@@ -125,6 +124,7 @@ char mqtt_server[40];
 WiFiClient wclient;  //Declares a WifiClient Object using ESP8266WiFi
 PubSubClient mqttClient(wclient);
 
+ERR_HANDLER _errAlert(u8g2,mqttClient);
 
 void setup() {
 
