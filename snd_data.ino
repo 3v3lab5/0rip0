@@ -46,33 +46,33 @@ void sendRate()
 
 }
 
-void Notifier(int err)
-{
-  char e_data[50];
-    String medi = _dripo.getMed();
-  const char* chr = medi.c_str();
-  sprintf(e_data, "%s-%s", chr, "rate_err");
+// void Notifier(int err)
+// {
+//   char e_data[50];
+//     String medi = _dripo.getMed();
+//   const char* chr = medi.c_str();
+//   sprintf(e_data, "%s-%s", chr, "rate_err");
 
-    if (WiFi.status() == WL_CONNECTED) {
-    if (mqttClient.connected()) {
-      if(err ==200){
-      sprintf(e_data, "%s-%s", chr, "rate_err");
+//     if (WiFi.status() == WL_CONNECTED) {
+//     if (mqttClient.connected()) {
+//       if(err ==200){
+//       sprintf(e_data, "%s-%s", chr, "rate_err");
 
-    sprintf(rate_channel,mqtt_channel_err, id);
-    mqttClient.publish(rate_channel, e_data);
-      }
-      if(err ==100){ 
-    sprintf(e_data, "%s-%s", chr, "rate_ok");
+//     sprintf(rate_channel,mqtt_channel_err, id);
+//     mqttClient.publish(rate_channel, e_data);
+//       }
+//       if(err ==100){ 
+//     sprintf(e_data, "%s-%s", chr, "rate_ok");
 
-  sprintf(rate_channel,mqtt_channel_err, id);
-    mqttClient.publish(rate_channel, e_data);
+//   sprintf(rate_channel,mqtt_channel_err, id);
+//     mqttClient.publish(rate_channel, e_data);
         
-      }
-   // mqttClient.disconnect();
-  //  wifi_status=5;
-   yield() ;
-  }
+//       }
+//    // mqttClient.disconnect();
+//   //  wifi_status=5;
+//    yield() ;
+//   }
     
-  }
-}
+//   }
+// }
 

@@ -98,7 +98,9 @@ void UI_Rate()
   altmsg = _dripo.Alert(timeElapsed);
 
  if(altmsg==NO_ERR)
- {
+ {  
+    devAck=false;
+    staAck=false;
     u8g2.setCursor(0, 92);
     u8g2.print("Vol infusd");
     u8g2.setCursor(36, 128);
@@ -112,8 +114,19 @@ void UI_Rate()
       sendRate();
     }
  }
- else{
- // _errAlert.display_err(altmsg,devAck,staAck,id,_dripo.getMed());
+ else if(devAck==true)
+  {
+    u8g2.setCursor(0, 92);
+    u8g2.print("Vol infusd");
+    u8g2.setCursor(36, 128);
+    u8g2.print("ml");
+    u8g2.setFont(u8g2_font_timR18_tn);
+    u8g2.setCursor(0, 116);
+    u8g2.print(_dripo.getvolInf());
+  }
+  else{
+
+  _errAlert.display_err(altmsg,devAck,staAck,id,_dripo.getMed());
    switch (get_button())
 
     {
