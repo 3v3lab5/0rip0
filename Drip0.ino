@@ -12,7 +12,7 @@
 #include <DNSServer.h>
 #include <ESP8266WebServer.h>
 #include <WiFiManager.h>
-#include <PubSubClient.h>
+//#include <PubSubClient.h>
 #include <elapsedMillis.h>
 #include <Ticker.h>
 #include "src/icons.h"
@@ -113,7 +113,7 @@ const char* mqtt_channel_bedreq = "dripo/%s/bed_req";                  ///to sen
 const char* mqtt_channel_medreq = "dripo/%s/med_req";                  ///to send med details
 const char* mqtt_channel_ratereq = "dripo/%s/rate_req";                  ///to send rate details
 const char* mqtt_channel_mon = "dripo/%s/mon";                  ///to send start/stop details
-const char* mqtt_channel_err = "dripo/%s/err";                  ///to send err details
+// const char* mqtt_channel_err = "dripo/%s/err";                  ///to send err details
 const char* mqtt_channel_devack = "dripo/%s/ack_dev";   		/// to publish dev ack 
 
 const int mqtt_port = 1883;
