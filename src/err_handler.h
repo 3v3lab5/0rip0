@@ -18,7 +18,7 @@ class ERR_HANDLER
 		PubSubClient mqttclnt;
 	public:
 		ERR_HANDLER(U8G2 u8,PubSubClient mqclnt);
-		void display_err(int,bool,bool,char[],String);
+		bool display_err(int,bool,bool,char[],String);
 		void err_alerttype1();
 		void err_alerttype2();
 		void mqttsenderror(char[]);

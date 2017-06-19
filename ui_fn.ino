@@ -125,8 +125,23 @@ void UI_Rate()
     u8g2.print(_dripo.getvolInf());
   }
   else{
+  if(staAck==true)
+  { 
+    acktime= millis();
+    if(acktime>60000)
+    {
+      staAck=false;
+      acktime=0;
 
-  _errAlert.display_err(altmsg,devAck,staAck,id,_dripo.getMed());
+    }
+  }
+  sleeper=_errAlert.display_err(altmsg,devAck,staAck,id,_dripo.getMed());
+  // if(callerrhandlerflag==true)
+  // {
+  //     sleeper=_errAlert.display_err(altmsg,devAck,staAck,id,_dripo.getMed());
+  //     callerrhandlerflag=false;
+
+  // }
    switch (get_button())
 
     {

@@ -2,8 +2,7 @@ void STBAR()
 {
   ESP.wdtFeed();
   if (state == 2 || state == 3 || state == 4 || state == 9 || state == 7 || state == 10 || infuseMenu == 3 || state == 17) {
-    //  stateOfCharge = batteryMonitor.getSoC();
-    stateOfCharge = 25;
+     stateOfCharge = batteryMonitor.getSoC();
     float  widthCharge = map(stateOfCharge, 0, 100, 1, 7.5);
     u8g2.drawXBM(42, 0, battery_width, battery_height, battery_bits);
     for(float i=0;i<=widthCharge;i++)

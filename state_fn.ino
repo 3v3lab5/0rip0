@@ -283,6 +283,13 @@ void Sleep()
 {
 idle_time = 0;
 u8g2.setPowerSave(1);
+if(sleeper==false)
+{
+  u8g2.setPowerSave(0);
+  idle_time = 0;
+  sleeper = false;
+  state = prev_state;
+}
 switch (get_button())
 {
   case 1: u8g2.setPowerSave(0);
