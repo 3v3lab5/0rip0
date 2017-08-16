@@ -1,16 +1,18 @@
-
+ 
 #define FPM_SLEEP_MAX_TIME 0xFFFFFFF
 
 void sendRate()
 {
-  char e_data[50];
+  char e_data[80];
 
   int SRate = _dripo.getRateMl();
   int SIvol = _dripo.getvolInf();
+  int Tvol = _dripo.getTvol();
+
   int SRtime = _dripo.getRtime();
-  String medi = _dripo.getMed();
+  String medi = _dripo.getMed()+"-"+_dripo.getTimetable()+"-"+"infusing";
   const char* chr = medi.c_str();
-  sprintf(e_data, "%s-%d-%d-%d", chr, SRate, SIvol, SRtime);
+  sprintf(e_data, "%s-%d-%d-%d-%d", chr, SRate, SIvol, SRtime,Tvol);
 
 
  // if (WiFi.status() != WL_CONNECTED)
@@ -33,8 +35,8 @@ void sendRate()
   yield() ;
   if (WiFi.status() == WL_CONNECTED) {
     if (mqttClient.connected()) {
-    sprintf(rate_channel, mqtt_channel_rate, id);
-    mqttClient.publish(rate_channel, e_data);
+    sprintf(rate_channel, mqtt_channel_mon, id);
+    mqttClient.publish(rate_channel, e_data,true);
    // mqttClient.disconnect();
     ticker_reached = false;
   //  wifi_status=5;
