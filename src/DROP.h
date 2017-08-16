@@ -7,14 +7,15 @@
 #define   NO_ERR    100 
 #define   COMPLETED   101 
 #define   MON_RANGE  10
-#define   ALERT_PERCENT       0.2
-
+#define   ALERT_PERCENT       0.15
+#define   PERIOD	40
 class DROP
 {
 private:
 //unsigned long int  _Etime;
 unsigned long int Filterd_Etime;
 //int _rate;
+unsigned long int sma;
 int _rate_ml;
 int _alert;
 int _df;
@@ -23,7 +24,7 @@ String _Bed;
 String _Med;
 String _Name;
 String _MedName;
-
+String _Timetable;
 int _Tvol;
 int _RemVol;
 int _Infvol;
@@ -31,10 +32,11 @@ long _Dcount;
 int _rTime;
 int _tTime;
 int _monCount;
+int _setCount;
 unsigned long int smooth(unsigned long int,float,unsigned long int);
 
 public:
-
+long runningAvg( long);
 long _rate;
 unsigned long int  _Etime;
 unsigned long int  _LastEtime;
@@ -45,6 +47,7 @@ int getRate();
 int  getRateMl();
 int getvolInf();
 int getvolRem();
+int getinfPercent();
 int getrate2set();
 long getDcount();
 int getRtime();
@@ -52,6 +55,7 @@ int getTtime();
 String getName();
 String getMed();
 String getMedName();
+String getTimetable();
 
 String getBed();
 
@@ -62,6 +66,7 @@ void setDf(String);
 void setBed(String);
 void setMed(String);
 void setMedName(String);
+void setTimetable(String);
 
 void setNam(String);
 void setTvol(String);
@@ -72,6 +77,7 @@ int  Alert(unsigned long int);
 int getAlertPercent() ;
 int getAlertDrops();
 int getR2setDPM();
+
 };
 
 

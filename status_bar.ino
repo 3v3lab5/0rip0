@@ -1,7 +1,7 @@
 void STBAR()
 {
   ESP.wdtFeed();
-  if (state == 2 || state == 3 || state == 4 || state == 9 || state == 7 || state == 10 || infuseMenu == 3 || state == 17) {
+  if (state == 2 || state == 9 || state == 7 || state == 10 || infuseMenu == 3 || state == 17) {
      stateOfCharge = batteryMonitor.getSoC();
     float  widthCharge = map(stateOfCharge, 0, 100, 1, 7.5);
     u8g2.drawXBM(42, 0, battery_width, battery_height, battery_bits);
@@ -75,65 +75,7 @@ void STBAR()
       prev_state = state;
       state = 11;
     }
-   // sleep = false;
-//    if (WiFi.status() == WL_CONNECTED)
-//    {
-//
-//
-//
-//      u8g2.drawXBM(0, 3, stwifi_width, stwifi_height, stwifi_bits);
-//
-//      if (wifirssi < 0 && wifirssi > -65)
-//      {
-//
-//        u8g2.drawDisc(10, 9, 2, U8G2_DRAW_ALL);
-//        u8g2.drawDisc(16, 9, 2, U8G2_DRAW_ALL);
-//        u8g2.drawDisc(22, 9, 2, U8G2_DRAW_ALL);
-//        u8g2.drawDisc(28, 9, 2, U8G2_DRAW_ALL);
-//      }
-//
-//      else if (wifirssi < -65 && wifirssi > -75)
-//      {
-//        u8g2.drawDisc(10, 9, 2, U8G2_DRAW_ALL);
-//        u8g2.drawDisc(16, 9, 2, U8G2_DRAW_ALL);
-//        u8g2.drawDisc(22, 9, 2, U8G2_DRAW_ALL);
-//        u8g2.drawCircle(28, 9, 2, U8G2_DRAW_ALL);
-//      }
-//      else if (wifirssi < -75 && wifirssi > -85)
-//      {
-//        u8g2.drawDisc(10, 9, 2, U8G2_DRAW_ALL);
-//        u8g2.drawDisc(16, 9, 2, U8G2_DRAW_ALL);
-//        u8g2.drawCircle(22, 9, 2, U8G2_DRAW_ALL);
-//        u8g2.drawCircle(28, 9, 2, U8G2_DRAW_ALL);
-//      }
-//
-//      else if (wifirssi < -85 && wifirssi > -91)
-//      {
-//        u8g2.drawDisc(10, 9, 2, U8G2_DRAW_ALL);
-//
-//        u8g2.drawCircle(16, 9, 2, U8G2_DRAW_ALL);
-//        u8g2.drawCircle(22, 9, 2, U8G2_DRAW_ALL);
-//        u8g2.drawCircle(28, 9, 2, U8G2_DRAW_ALL);
-//      }
-//
-//      else if (wifirssi < -91 && wifirssi > -95)
-//      {
-//        u8g2.drawDisc(10, 9, 2, U8G2_DRAW_LOWER_LEFT);
-//        u8g2.drawDisc(10, 9, 2, U8G2_DRAW_UPPER_LEFT);
-//        u8g2.drawCircle(16, 2, U8G2_DRAW_ALL);
-//        u8g2.drawCircle(22, 9, 2, U8G2_DRAW_ALL);
-//        u8g2.drawCircle(28, 9, 2, U8G2_DRAW_ALL);
-//      }
-//      u8g2.drawCircle(10, 9, 2, U8G2_DRAW_ALL);
-//      u8g2.drawCircle(16, 9, 2, U8G2_DRAW_ALL);
-//      u8g2.drawCircle(22, 9, 2, U8G2_DRAW_ALL);
-//      u8g2.drawCircle(28, 9, 2, U8G2_DRAW_ALL);
-//    }
-//
-//    else
-//    {
-//      u8g2.drawXBM(30, -1, ic_signal_wifi_off_width, ic_signal_wifi_off_height, ic_signal_wifi_off_bits);
-//    }
+
     u8g2.setDrawColor(1);
 
   }

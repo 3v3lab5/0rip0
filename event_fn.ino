@@ -48,7 +48,7 @@ void encoder() {
   int sum  = (lastEncoded << 2) | encoded; //adding it to the previous encoded value
 
   if (sum == 0b1101 || sum == 0b0100 || sum == 0b0010 || sum == 0b1011) encoderValue ++;
-  if (sum == 0b1110 || sum == 0b0111 || sum == 0b0001 || sum == 0b1000) encoderValue --;
+  else if (sum == 0b1110 || sum == 0b0111 || sum == 0b0001 || sum == 0b1000) encoderValue --;
 
   lastEncoded = encoded;
   if (encoderValue > lastencoderValue)
@@ -57,7 +57,7 @@ void encoder() {
     lastencoderValue = encoderValue;
   }
 
-  if (encoderValue < lastencoderValue)
+  else if (encoderValue < lastencoderValue)
   {
     BTN = 4;
     lastencoderValue = encoderValue;
@@ -67,13 +67,15 @@ void encoder() {
 }
 void checkdrop()
 {
-  if (timeElapsed > 143) {
-
-
+  if (timeElapsed > 190) {
     _dripo.setTime(timeElapsed);
-    timeElapsed = 0;
-
+    logtime=timeElapsed;
+    logstatus=1;
+  //  timeElapsed = 0;
+    detect1 = 0;
+    detect2 = 1;
   }
+    timeElapsed = 0;
 
 }
 

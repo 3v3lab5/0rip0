@@ -25,7 +25,9 @@ void callback(char* topic, byte* payload, unsigned int length) {
   else if (strcmp(topic, r_channel_rate) == 0)
   {
     char *token;
-    token = strtok((char*)payload, "&");  // name
+     token = strtok((char*)payload, "&");  // timetable
+    _dripo.setTimetable(String((char*)token));
+    token = strtok(NULL, "&");  // name
     _dripo.setNam(String((char*)token));
     token = strtok(NULL, "&");  // Med NAme
     _dripo.setMedName(String((char*)token));

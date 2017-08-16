@@ -12,9 +12,12 @@ String send_req(String Data)
   }
  else if(Data=="df")
  {
-   //   mqttClient.connect(id);
+     char e_data[50];
+  String medi=_dripo.getMed();
+  const char* chr = medi.c_str();
+     sprintf(e_data, "%s", chr);
     sprintf(pat_channel, mqtt_channel_req, id);
-    mqttClient.publish(pat_channel, "df");
+    mqttClient.publish(pat_channel,chr);
     return "nill";
  }
 
@@ -47,35 +50,53 @@ String send_req(String Data)
 
     else if(Data=="start")
  { 
+
+    char e_data[80];
+
+  int SRate = _dripo.getRateMl();
+  int SIvol = _dripo.getvolInf();
+  int SRtime = _dripo.getRtime();
+   int Tvol = _dripo.getTvol();
+
  //  String medi=Data+"-"+_dripo.getBed()+"-"+_dripo.getMed();
-       String medi=_dripo.getMed()+"-"+Data;
+        String medi=_dripo.getMed()+"-"+_dripo.getTimetable()+"-"+Data;
   const char* chr = medi.c_str();
    //   mqttClient.connect(id);
+     sprintf(e_data, "%s-%d-%d-%d-%d", chr, SRate, SIvol, SRtime,Tvol);
     sprintf(pat_channel, mqtt_channel_mon, id);
-    mqttClient.publish(pat_channel, chr);
+    
+    mqttClient.publish(pat_channel,e_data,true);
     return "nill";
  } 
 
 
   else if(Data=="stop")
  { 
+      char e_data[80];
+
+  int SRate = _dripo.getRateMl();
+  int SIvol = _dripo.getvolInf();
+  int SRtime = _dripo.getRtime();
+   int Tvol = _dripo.getTvol();
+
  //  String medi=Data+"-"+_dripo.getBed()+"-"+_dripo.getMed();
-        String medi=_dripo.getMed()+"-"+Data;
+        String medi=_dripo.getMed()+"-"+_dripo.getTimetable()+"-"+Data;
   const char* chr = medi.c_str();
    //   mqttClient.connect(id);
+        sprintf(e_data, "%s-%d-%d-%d-%d", chr, SRate, SIvol, SRtime,Tvol);
     sprintf(pat_channel, mqtt_channel_mon, id);
-    mqttClient.publish(pat_channel, chr);
+    mqttClient.publish(pat_channel, e_data,true);
     return "nill";
  }
 
-    else if(Data=="dev_ack")
-    {
- String ack=_dripo.getMed()+"-"+Data;
-   const char* chr = ack.c_str();
-    sprintf(staAck_channel, mqtt_channel_devack, id);
-    mqttClient.publish(staAck_channel, chr);
- return "nill";
-    }
+//    else if(Data=="dev_ack")
+//    {
+// String ack=_dripo.getMed()+"-"+Data;
+//   const char* chr = ack.c_str();
+//    sprintf(staAck_channel, mqtt_channel_devack, id);
+//    mqttClient.publish(staAck_channel, chr,true);
+// return "nill";
+//    }
 
     else if(Data=="ver")
  { 
