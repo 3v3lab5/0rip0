@@ -135,7 +135,7 @@ const char* mqtt_channel_log = "dripo/%s/log";                  ///to send err d
 //const char* mqtt_channel_devack = "dripo/%s/ack_dev";       /// to publish dev ack
 
 const int mqtt_port = 1883;
-char* mqtt_server = "192.168.101.11";
+char* mqtt_server = "13.126.206.145";
 //char mqtt_server[40];
 //char mqtt_port[6] = "1883";
 

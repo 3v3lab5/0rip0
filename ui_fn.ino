@@ -41,10 +41,11 @@ void UI_Rate()
 
   u8g2.setDrawColor(1);
   String txt;
-  txt = _dripo.getRate();
+  txt = _dripo.DisplayRate();
   u8g2.setFont(u8g2_font_timR24_tn);
   u8g2.setCursor(32 - (u8g2.getStrWidth(txt.c_str()) / 2), 47);
-  u8g2.print(_dripo.getRate());
+  //u8g2.print(_dripo.getRate());
+  u8g2.print(_dripo.DisplayRate());
  // u8g2.drawHLine(0, 64, 13);
  // u8g2.drawHLine(51, 64, 13);
   u8g2.setDrawColor(detect1);                   // change to 0 when detects otherwise 2
@@ -77,6 +78,7 @@ void UI_Rate()
     u8g2.setFont(u8g2_font_timR18_tn);
     u8g2.setCursor(0, 116);
     u8g2.print(_dripo.getR2setDPM());
+
   }
   else if (MonState == 1) {
     u8g2.setCursor(8, 92);

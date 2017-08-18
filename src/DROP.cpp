@@ -1,31 +1,39 @@
 #include"DROP.h"
-#define FILTER 0.70
+
+MovingAverageFilter movingAvg(10);
 
 //Calculate Rate(dpm) using Time btwn drops and apply moving Avg//
 int DROP::getRate()
 {
 
   if (_Dcount > 0) {
-//    Filterd_Etime = smooth(_Etime, FILTER, Filterd_Etime);
-//      Filterd_Etime = runningAvg(_Etime);
-    _rate = (long)60000 / _Etime;
-if(_Etime>1000){
-    	_rate = runningAvg(_rate);
-}
     _rate_ml = (_rate * 60) / _df;
     return _rate;
   }
 
 
 }
+//Dispay Rate change only after 3 drops
+int DROP::DisplayRate()
+{
+if( (_Dcount-_disCount) >=3||getRate()<60)
+	{
+		_disRate=getRate();
+		_disCount=_Dcount;
+		return _disRate;
+	}
+else if(getRate()>60) {
+	return _disRate;
+}
+
+
+
+}
+
 //Returns Rate in Ml/hr// 
 int DROP::getRateMl()
 {
   if (_Dcount > 0) {
-//    Filterd_Etime = smooth(_Etime, FILTER, Filterd_Etime);
-
- //   _rate = (long)60000 / _Etime;
- //   _rate_ml = _rate * 60 / _df;
     return _rate_ml;
   }
 
@@ -55,33 +63,13 @@ void DROP::setTime(unsigned long int drip_time)
 {
   _Etime = drip_time;
   _Dcount++;
-
-}
-
-//Apply running Avg on Rate
-long DROP::runningAvg(long newVal)
+    _rate = (long)60000 / _Etime;
+   newrate = movingAvg.process(_rate);
+if(_Etime<1000)
 {
-sma *= (PERIOD - 1);
-sma += newVal;
-sma /= PERIOD;
-return sma;
-
+_rate=newrate;
 }
 
-//Exponential Filter(old)
-unsigned long int DROP::smooth(unsigned long int data, float filterVal, unsigned long int smoothedVal) {
-
-
-  if (filterVal > 1) {
-    filterVal = .99;
-  }
-  else if (filterVal <= 0) {
-    filterVal = 0;
-  }
-
-  smoothedVal = (data * (1 - filterVal)) + (smoothedVal  *  filterVal);
-
-  return (unsigned long int)smoothedVal;
 }
 
 //Set drop factor of the drip set

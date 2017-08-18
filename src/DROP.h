@@ -1,6 +1,7 @@
 #ifndef DROP_H
 #define DROP_H
 #include "Arduino.h"
+#include "MovingAverageFilter.h"
 #define   BLOCK     405
 #define   EMPTY     404
 #define   RATE_ERR  406
@@ -8,13 +9,11 @@
 #define   COMPLETED   101 
 #define   MON_RANGE  10
 #define   ALERT_PERCENT       0.15
-#define   PERIOD	40
+#define   PERIOD	10
 class DROP
 {
 private:
-//unsigned long int  _Etime;
-unsigned long int Filterd_Etime;
-//int _rate;
+int newrate;
 unsigned long int sma;
 int _rate_ml;
 int _alert;
@@ -33,10 +32,10 @@ int _rTime;
 int _tTime;
 int _monCount;
 int _setCount;
-unsigned long int smooth(unsigned long int,float,unsigned long int);
+int _disCount;
+int _disRate;
 
 public:
-long runningAvg( long);
 long _rate;
 unsigned long int  _Etime;
 unsigned long int  _LastEtime;
@@ -44,6 +43,7 @@ unsigned long int  _LastEtime;
 
 void setTime(unsigned long int);
 int getRate();
+int DisplayRate();
 int  getRateMl();
 int getvolInf();
 int getvolRem();
