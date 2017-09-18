@@ -13,37 +13,34 @@
 class DROP
 {
 private:
-int newrate;
-unsigned long int sma;
-int _rate_ml;
-int _alert;
-int _df;
-int _rate2set;
+unsigned int newrate;
+unsigned int _rate_ml;
+unsigned int _alert;
+unsigned int _df;
+unsigned int _rate2set;
 String _Bed;
 String _Med;
 String _Name;
 String _MedName;
 String _Timetable;
-int _Tvol;
+unsigned int _Tvol;
 int _RemVol;
-int _Infvol;
+unsigned int _Infvol;
 long _Dcount;
 int _rTime;
 int _tTime;
 int _monCount;
 int _setCount;
-int _disCount;
-int _disRate;
 
 public:
 long _rate;
 unsigned long int  _Etime;
 unsigned long int  _LastEtime;
 
-
+DROP();
+~DROP();
 void setTime(unsigned long int);
 int getRate();
-int DisplayRate();
 int  getRateMl();
 int getvolInf();
 int getvolRem();

@@ -1,3 +1,5 @@
+//File contains most of the UI fns 
+//Print Dev name on screen
 void UI_Logo() {
 
 
@@ -8,7 +10,7 @@ void UI_Logo() {
 
 }
 
-
+//connecting to wifi network
 void UI_Wifi()
 {
 
@@ -21,9 +23,9 @@ void UI_Wifi()
   u8g2.print("network");
   u8g2.drawXBM( 20, 85, wifi_01_width, wifi_01_height, wifi_01_bits);
 
-
-
 }
+
+//MAin Menu
 void UI_Menu()
 
 {
@@ -32,20 +34,21 @@ void UI_Menu()
 
 }
 
+
+//Rate Menu-- contains monitoring mode also
 void UI_Rate()
 
 {
-  analogWriteFreq(38000);
-  analogWrite(IR_PIN,irAmp);
-  //  logstatus=LogData(logtime,logstatus);
+  analogWriteFreq(38000);           ///set ir frequency to 38khz
+  analogWrite(IR_PIN,irAmp);        // Start Ir
+  //  logstatus=LogData(logtime,logstatus);      //log data on each drop
 
   u8g2.setDrawColor(1);
   String txt;
-  txt = _dripo.DisplayRate();
+  txt = _dripo.getRate();
   u8g2.setFont(u8g2_font_timR24_tn);
   u8g2.setCursor(32 - (u8g2.getStrWidth(txt.c_str()) / 2), 47);
-  //u8g2.print(_dripo.getRate());
-  u8g2.print(_dripo.DisplayRate());
+  u8g2.print(_dripo.getRate());
  // u8g2.drawHLine(0, 64, 13);
  // u8g2.drawHLine(51, 64, 13);
   u8g2.setDrawColor(detect1);                   // change to 0 when detects otherwise 2
@@ -55,7 +58,7 @@ void UI_Rate()
   u8g2.setCursor(19, 68);
   u8g2.print("dpm");
   u8g2.setDrawColor(1);
- if(detect1==0&&detect2==1)
+ if(detect1==0&&detect2==1)      //for drop notification .the dpm icons blinks in each drop
   {
             long detecttime = millis();
             if(detecttime-lastDAttempt>200)
@@ -68,9 +71,9 @@ void UI_Rate()
   }
 
 
-
+//first state shows the rate to set in screen// idle time is made 0 to disable powersave mode
   if (MonState == 0) {
-      idle_time = 0;
+      idle_time = 0;      //disable powersave mode
     u8g2.setCursor(0, 92);
     u8g2.print("Rate to set");
     u8g2.setCursor(34, 126);
@@ -80,21 +83,25 @@ void UI_Rate()
     u8g2.print(_dripo.getR2setDPM());
 
   }
+
+  // canceling infusion
   else if (MonState == 1) {
     u8g2.setCursor(8, 92);
     u8g2.print("Cancel?");
     dialogbox.dialog_box("No&Yes&", 102, 2);
 
   }
+
+  //Ask for move to monitring state or not
   else if (MonState == 2) {
     u8g2.setCursor(5, 92);
     u8g2.print("Monitor?");
     dialogbox.dialog_box("No&Yes&", 102, 2);
 
   }
-
+//monitoring state
   else if (MonState == 3) {
-  altmsg = _dripo.Alert(timeElapsed);
+  altmsg = _dripo.Alert(timeElapsed);    //alert msg is created using the time elapsed btween drops
 
  if(altmsg==NO_ERR||devAck==true)
  {  
@@ -300,6 +307,7 @@ void UI_infuse()
   }
 }
 
+///Update UI....will be removed
 void UI_Update() {
 
   u8g2.setDrawColor(1);
@@ -312,7 +320,7 @@ void UI_Update() {
 
 }
 
-
+//Shutdown dialog box
 void UI_Shutdown()
 { u8g2.setDrawColor(1);
 
@@ -321,6 +329,8 @@ void UI_Shutdown()
   dialogbox.dialog_box("No&Yes&", 72, 2);
 }
 
+
+//Setup MEnu
 void UI_Setup()
 {
   //U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI u8g2(U8G2_R3, /* clock=*/ 1, /* data=*/2, /* cs=*/ 10);
@@ -330,6 +340,7 @@ void UI_Setup()
 
 }
 
+//shows tis UI when data is requestd and wifi is not connected
 void UI_WifiConf()
 {
   u8g2.setCursor(1, 62);
@@ -338,6 +349,7 @@ void UI_WifiConf()
 
 }
 
+//UI
 void UI_fin()
 {
 
@@ -345,6 +357,8 @@ void UI_fin()
 
 }
 
+
+//just a device Menu to know the status of device.. need updation
 void UI_dripo()
 {
     //digitalWrite(BUZZ_PIN, HIGH);
@@ -396,6 +410,7 @@ if(analogRead(A0)>530)
 
 }
 
+//show server err if data is requestd and Mosquitto is not connected
 
 void UI_ServErr()
 {
@@ -406,6 +421,7 @@ void UI_ServErr()
   dialogbox.dialog_box("Ok&", 72, 1);
 
 }
+//Bat LOW
 void UI_batlow()
 {
 
@@ -414,7 +430,9 @@ void UI_batlow()
   u8g2.setCursor(32 - ( u8g2.getStrWidth("BAT LOW")/ 2), 100);
   u8g2.print("BAT LOW");
 }
-void UI_InfBatChK()
+
+//BAttery Check Before starting Infusion as warning to show the battey level is insfficent for the insfusion
+void UI_InfBatChK() 
 {
 
   u8g2.setFont(u8g2_font_crox2h_tr);
@@ -424,6 +442,8 @@ void UI_InfBatChK()
   dialogbox1.dialog_box("Ok&", 100, 1);
 
 }
+
+//BAttery LOW UI
 void UI_batchk()
 {
 
@@ -433,6 +453,8 @@ void UI_batchk()
   u8g2.print("BAT LOW");
 
 }
+
+//Battey Full UI
 void UI_batfull()
 {
 
@@ -567,7 +589,7 @@ void UI_batfull()
 //    }
 //  }
 //}
-
+//calibration screen.. loading animation
 void UI_Calib()
 {
 

@@ -57,6 +57,7 @@ int PMonState = 0;
 int qos = 1;
 int radius = 5;
 int connection = 0;
+int  switchon =1000;
 const char* VERSION = "0.8";
 String DataStatus = "nill";
 long lastReconnectAttempt = 0;
@@ -135,7 +136,7 @@ const char* mqtt_channel_log = "dripo/%s/log";                  ///to send err d
 //const char* mqtt_channel_devack = "dripo/%s/ack_dev";       /// to publish dev ack
 
 const int mqtt_port = 1883;
-char* mqtt_server = "13.126.206.145";
+char* mqtt_server = "192.168.225.36";
 //char mqtt_server[40];
 //char mqtt_port[6] = "1883";
 
@@ -145,6 +146,7 @@ PubSubClient mqttClient(wclient);
 ERR_HANDLER _errAlert(u8g2, mqttClient);
 
 void setup() {
+
   Wire.begin(2, 0);
   Serial.begin(115200);
 
@@ -167,6 +169,7 @@ void setup() {
   pinMode(ENCODER_PINA, INPUT_PULLUP);
   pinMode(ENCODER_PINB, INPUT_PULLUP);
   pinMode(DROP_PIN, INPUT_PULLUP);
+  analogWrite(WAKE_PIN,switchon);
 
   attachInterrupt(digitalPinToInterrupt(ENCODER_BTN), checkButton, CHANGE);
 
@@ -190,7 +193,9 @@ void (* myFunc[19])() = {drawLogo, wifi_init, menu_1, menu_2, menu_3, M_infuse, 
 void (* UI_Fn[17])() = {UI_Logo, UI_Wifi, UI_Menu, UI_Rate, UI_infuse, UI_Update, UI_Shutdown, UI_Setup, UI_WifiConf, UI_fin, UI_dripo, UI_ServErr, UI_batlow, UI_InfBatChK, UI_batchk, UI_batfull, UI_Calib};
 
 void loop() {
-  digitalWrite(WAKE_PIN, LOW);
+
+//  digitalWrite(WAKE_PIN, LOW);
+analogWrite(WAKE_PIN,switchon);
   u8g2.clearBuffer();
   UI_Fn[ui_state]();
   STBAR();

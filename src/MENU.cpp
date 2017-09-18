@@ -143,16 +143,28 @@ MENU::MENU(String title, char *st, U8G2 u8)
   _u8g2 = u8;
   state = 1;
   last_item = i - 1;
-
+  strwidth=0;
+_diastate=0;
+_diares=1;
+state=1;
 }
 
 MENU::MENU(U8G2 u8)
 {
   _u8g2 = u8;
-
+  strwidth=0;
+_diastate=0;
+_diares=1;
+state=1;
+last_item=1;
 }
 MENU::MENU()   ///default constructor
 {
+strwidth=0;
+_diastate=0;
+_diares=1;
+state=1;
+last_item=1;
 
 
 }

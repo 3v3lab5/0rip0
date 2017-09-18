@@ -8,7 +8,7 @@ class LOADER
   
     U8G2 _u8g2;
     double inRad;
-    double outRad,speedInc;
+    double outRad;
     float speedinc;
     float i,lasti,r;
    

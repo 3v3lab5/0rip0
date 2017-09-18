@@ -8,8 +8,8 @@ class ICON
   
     U8G2 _u8g2;
     int state=4,laststate=4;
-    int h,w,speed=20,moving=0;
-    int cur_state;
+    int speed=20,moving=0;
+    //int cur_state;
      int cur_posx;
     int cur_posy;
      int last_posx;

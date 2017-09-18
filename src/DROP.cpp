@@ -13,22 +13,7 @@ int DROP::getRate()
 
 
 }
-//Dispay Rate change only after 3 drops
-int DROP::DisplayRate()
-{
-if( (_Dcount-_disCount) >=3||getRate()<60)
-	{
-		_disRate=getRate();
-		_disCount=_Dcount;
-		return _disRate;
-	}
-else if(getRate()>60) {
-	return _disRate;
-}
 
-
-
-}
 
 //Returns Rate in Ml/hr// 
 int DROP::getRateMl()
@@ -279,7 +264,7 @@ int DROP::Alert(unsigned long int _time)
     }
   }
 
-  else  if (getinfPercent() >= 95 )
+  else  if (getinfPercent() >= 90 )
   {
    _monCount=_Dcount;
 	  return COMPLETED;
@@ -289,4 +274,28 @@ int DROP::Alert(unsigned long int _time)
     return NO_ERR;
   }
 }
+//default Constructor
+DROP::DROP()
+{
+	newrate=1;
+	_rate_ml=1;
+	_alert=30;
+	_df=60;
+	_rate2set=1;
+	_Tvol=1;
+	_RemVol=1;
+	_Infvol=1;
+	_Dcount=0;
+	_rTime=1;
+	_tTime=1;
+	_monCount=0;
+	_setCount=0;
+	_rate=1;
+	_Etime=1;
+	_LastEtime=1;
+}
+//default Distructor
+DROP::~DROP()
+{
 
+}

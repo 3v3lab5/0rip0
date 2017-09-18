@@ -3,11 +3,14 @@
 
 MovingAverageFilter::MovingAverageFilter(unsigned int newDataPointsCount) {
   k = 0; //initialize so that we start to write at index 0
+  out = 0;//initialize first output to zero
+  
   if (newDataPointsCount < MAX_DATA_POINTS)
 	dataPointsCount = newDataPointsCount;
   else
 	dataPointsCount = MAX_DATA_POINTS;
-  
+
+
   for (i=0; i<dataPointsCount; i++) {
     values[i] = 0; // fill the array with 0's
   }
