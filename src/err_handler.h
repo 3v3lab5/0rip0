@@ -12,7 +12,7 @@ class ERR_HANDLER
 		bool STA_ACK;
 		bool DEV_ACK;
 		int ERR;
-		char ID[30];
+		char ID[30]={'0'};
 		String MED,_Timetable;
 		int RATE,INFVOL,RTIME,TVOL;
 		U8G2 _u8g2;

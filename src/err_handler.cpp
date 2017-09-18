@@ -46,7 +46,14 @@ mqttclnt=mqclnt;
 wasExecuted1=false;
 wasExecuted2=false;
 wasExecuted3=false;
-wasExecuted1=false;
+wasExecuted4=false;
+STA_ACK=false;
+DEV_ACK=true;
+ERR=0;
+RATE=1;
+INFVOL=1;
+RTIME=1;
+TVOL=1;
 
 }
 void ERR_HANDLER::err_alerttype1()
@@ -157,14 +164,15 @@ void ERR_HANDLER::err_alerttype2()
 void ERR_HANDLER::mqttsenderror(char errortype[20])
 {
 
-	const char* mqtt_channel_error="dripo/%s/mon";
-	char error_channel[50];
 	char e_data[80];
 	String medi=MED+"-"+_Timetable+"-"+errortype;
 	  const char* chr = medi.c_str();
 	  sprintf(e_data,"%s-%d-%d-%d-%d",chr,RATE,INFVOL,RTIME,TVOL);
 	    if (mqttclnt.connected()) 
 	    {
+
+		const char* mqtt_channel_error="dripo/%s/mon";
+		char error_channel[50];
 	    	sprintf(error_channel,mqtt_channel_error,ID);
 	    	mqttclnt.publish(error_channel, e_data,true);
 		}

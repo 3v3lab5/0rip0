@@ -11,6 +11,8 @@ ICON::ICON(String _title, unsigned char* _ic, U8G2 u8)
 
   last_posx = 8;
   last_posy = 160;
+  cur_posx=8;
+  cur_posy=160;
 }
 
 ICON::~ICON() ///default distructor

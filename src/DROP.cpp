@@ -1,31 +1,24 @@
 #include"DROP.h"
-#define FILTER 0.70
+
+MovingAverageFilter movingAvg(10);
 
 //Calculate Rate(dpm) using Time btwn drops and apply moving Avg//
 int DROP::getRate()
 {
 
   if (_Dcount > 0) {
-//    Filterd_Etime = smooth(_Etime, FILTER, Filterd_Etime);
-//      Filterd_Etime = runningAvg(_Etime);
-    _rate = (long)60000 / _Etime;
-if(_Etime>1000){
-    	_rate = runningAvg(_rate);
-}
     _rate_ml = (_rate * 60) / _df;
     return _rate;
   }
 
 
 }
+
+
 //Returns Rate in Ml/hr// 
 int DROP::getRateMl()
 {
   if (_Dcount > 0) {
-//    Filterd_Etime = smooth(_Etime, FILTER, Filterd_Etime);
-
- //   _rate = (long)60000 / _Etime;
- //   _rate_ml = _rate * 60 / _df;
     return _rate_ml;
   }
 
@@ -55,33 +48,13 @@ void DROP::setTime(unsigned long int drip_time)
 {
   _Etime = drip_time;
   _Dcount++;
-
-}
-
-//Apply running Avg on Rate
-long DROP::runningAvg(long newVal)
+    _rate = (long)60000 / _Etime;
+   newrate = movingAvg.process(_rate);
+if(_Etime<1000)
 {
-sma *= (PERIOD - 1);
-sma += newVal;
-sma /= PERIOD;
-return sma;
-
+_rate=newrate;
 }
 
-//Exponential Filter(old)
-unsigned long int DROP::smooth(unsigned long int data, float filterVal, unsigned long int smoothedVal) {
-
-
-  if (filterVal > 1) {
-    filterVal = .99;
-  }
-  else if (filterVal <= 0) {
-    filterVal = 0;
-  }
-
-  smoothedVal = (data * (1 - filterVal)) + (smoothedVal  *  filterVal);
-
-  return (unsigned long int)smoothedVal;
 }
 
 //Set drop factor of the drip set
@@ -291,7 +264,7 @@ int DROP::Alert(unsigned long int _time)
     }
   }
 
-  else  if (getinfPercent() >= 95 )
+  else  if (getinfPercent() >= 90 )
   {
    _monCount=_Dcount;
 	  return COMPLETED;
@@ -301,4 +274,28 @@ int DROP::Alert(unsigned long int _time)
     return NO_ERR;
   }
 }
+//default Constructor
+DROP::DROP()
+{
+	newrate=1;
+	_rate_ml=1;
+	_alert=30;
+	_df=60;
+	_rate2set=1;
+	_Tvol=1;
+	_RemVol=1;
+	_Infvol=1;
+	_Dcount=0;
+	_rTime=1;
+	_tTime=1;
+	_monCount=0;
+	_setCount=0;
+	_rate=1;
+	_Etime=1;
+	_LastEtime=1;
+}
+//default Distructor
+DROP::~DROP()
+{
 
+}

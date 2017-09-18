@@ -24,7 +24,7 @@ class MENU
     void dwn();
     String getSelect();
     MENU(String,char*,U8G2 u8);
-    MENU(U8G2 u8);
+explicit MENU(U8G2 u8);
     MENU();
     ~MENU();
     String getDia();

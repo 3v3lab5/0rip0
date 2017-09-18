@@ -67,7 +67,7 @@ void encoder() {
 }
 void checkdrop()
 {
-  if (timeElapsed > 190) {
+  if (timeElapsed > 200) {
     _dripo.setTime(timeElapsed);
     logtime=timeElapsed;
     logstatus=1;

@@ -7,13 +7,18 @@ LOADER::LOADER(double _inRad,double _outRad, U8G2 u8)
  inRad=_inRad;
  outRad=_outRad;
  i=random(360);
-lasti=i; 
+lasti=i;
+speedinc=0.6;
+r=0;
 }
 
 LOADER::LOADER(double _outRad, U8G2 u8)
 {
  _u8g2 = u8;
  outRad=_outRad;
+ i=0;
+ lasti=0;
+ inRad=1;
 r=random(1,outRad);
 speedinc=(float)((rand() % 4 + 1)/3);
 }

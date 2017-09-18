@@ -9,7 +9,8 @@ class MAINMENU
   private:
     int state=0,changeflag=1;
     ICON* _ic;
-    int arr[5];float dotrad=1;
+    int arr[9];
+    float dotrad=1;
     U8G2 _u8g2;
     
 

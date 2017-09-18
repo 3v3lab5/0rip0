@@ -153,12 +153,13 @@ void M_pwroff()
           mqttClient.disconnect();
 
         }
-        digitalWrite(WAKE_PIN, HIGH);
-        u8g2.setPowerSave(1);
-        system_deep_sleep_set_option(2);
-        system_deep_sleep(0);
-               yield();
-        delay(800);
+        switchon=0;
+      //  digitalWrite(WAKE_PIN, HIGH);
+      // u8g2.setPowerSave(1);
+      //  system_deep_sleep_set_option(2);
+       // system_deep_sleep(0);
+        //       yield();
+       // delay(800);
       }
       break;
     case 3: dialogbox._diaup();
