@@ -41,7 +41,7 @@ void UI_Rate()
 {
   analogWriteFreq(38000);           ///set ir frequency to 38khz
   analogWrite(IR_PIN,irAmp);        // Start Ir
-  //  logstatus=LogData(logtime,logstatus);      //log data on each drop
+  logstatus=LogData(logtime,logstatus);      //log data on each drop
 
   u8g2.setDrawColor(1);
   String txt;

@@ -1,7 +1,7 @@
 #include <FS.h>
 #include <ArduinoJson.h>
 #include <Wire.h>
-#include"src/err_handler.h"
+#include "src/err_handler.h"
 #include "src/MENU.h"
 #include "src/LOADER.h"
 #include "src/DROP.h"
@@ -136,7 +136,7 @@ const char* mqtt_channel_log = "dripo/%s/log";                  ///to send err d
 //const char* mqtt_channel_devack = "dripo/%s/ack_dev";       /// to publish dev ack
 
 const int mqtt_port = 1883;
-char* mqtt_server = "192.168.225.36";
+char* mqtt_server = "192.168.0.13";
 //char mqtt_server[40];
 //char mqtt_port[6] = "1883";
 
@@ -169,7 +169,7 @@ void setup() {
   pinMode(ENCODER_PINA, INPUT_PULLUP);
   pinMode(ENCODER_PINB, INPUT_PULLUP);
   pinMode(DROP_PIN, INPUT_PULLUP);
-  analogWrite(WAKE_PIN,switchon);
+ // analogWrite(WAKE_PIN,switchon);
 
   attachInterrupt(digitalPinToInterrupt(ENCODER_BTN), checkButton, CHANGE);
 
@@ -194,8 +194,8 @@ void (* UI_Fn[17])() = {UI_Logo, UI_Wifi, UI_Menu, UI_Rate, UI_infuse, UI_Update
 
 void loop() {
 
-//  digitalWrite(WAKE_PIN, LOW);
-analogWrite(WAKE_PIN,switchon);
+  digitalWrite(WAKE_PIN, LOW);
+//analogWrite(WAKE_PIN,switchon);
   u8g2.clearBuffer();
   UI_Fn[ui_state]();
   STBAR();

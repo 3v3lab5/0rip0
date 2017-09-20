@@ -7,7 +7,7 @@ int LogData(unsigned long int _ElTime, int stats)
   int SIvol = _dripo.getvolInf();
   int S_df = _dripo.getDf();
 
-  String medi = _dripo.getMed();
+  String medi = _dripo.getMed()+"-"+_dripo.getTimetable();
   long _DropCount = _dripo.getDcount();
   const char* chr = medi.c_str();
 

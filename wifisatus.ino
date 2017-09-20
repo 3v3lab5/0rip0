@@ -11,52 +11,53 @@ int wifi_connect(int WIFI_STATE)
 
   if (WIFI_STATE == 1)
   {
-    if (SPIFFS.begin()) {
-      if (SPIFFS.exists("/config.json")) {
-        //file exists, reading and loading
-        File configFile = SPIFFS.open("/config.json", "r");
-        if (configFile) {
-          size_t size = configFile.size();
-          // Allocate a buffer to store contents of the file.
-          std::unique_ptr<char[]> buf(new char[size]);
+  //   if (SPIFFS.begin()) {
+  //     if (SPIFFS.exists("/config.json")) {
+  //       //file exists, reading and loading
+  //       File configFile = SPIFFS.open("/config.json", "r");
+  //       if (configFile) {
+  //         size_t size = configFile.size();
+  //         // Allocate a buffer to store contents of the file.
+  //         std::unique_ptr<char[]> buf(new char[size]);
 
-          configFile.readBytes(buf.get(), size);
-          DynamicJsonBuffer jsonBuffer;
-          JsonObject& json = jsonBuffer.parseObject(buf.get());
-          if (json.success()) {
+  //         configFile.readBytes(buf.get(), size);
+  //         DynamicJsonBuffer jsonBuffer;
+  //         JsonObject& json = jsonBuffer.parseObject(buf.get());
+  //         if (json.success()) {
 
-        //  strcpy(mqtt_server, json["mqtt_server"]);
+  //       //  strcpy(mqtt_server, json["mqtt_server"]);
 
-          } else {
-            //   Serial.println("failed to load json config");
-          }
-        }
-      }
-    } else {
-      //Serial.println("failed to mount FS");
-    }
+  //         } else {
+  //           //   Serial.println("failed to load json config");
+  //         }
+  //       }
+  //     }
+  //   } else {
+  //     //Serial.println("failed to mount FS");
+  //   }
 
-    WiFiManager wifiManager;
-    //  wifiManager.setSaveConfigCallback(saveConfigCallback);
-    wifiManager.setConnectTimeout(10);
-    wifiManager.setConfigPortalTimeout(1);
+    // WiFiManager wifiManager;
+    // //  wifiManager.setSaveConfigCallback(saveConfigCallback);
+    // wifiManager.setConnectTimeout(10);
+    // wifiManager.setConfigPortalTimeout(1);
 
 
-    if (!wifiManager.autoConnect(id)) {
+    // if (!wifiManager.autoConnect(id)) {
 
-      WiFi.mode(WIFI_OFF);
-      return 2;
-    }
+ WiFi.mode(WIFI_STA);    //   return 2;
+ WiFi.begin();
+ yield();
+    // }
 
-    if ( WiFi.status() == WL_CONNECTED ) {
-      mqtt_reconnect();
-    }
+    // if ( WiFi.status() == WL_CONNECTED ) {
+    //   mqtt_reconnect();
+    // }
     return 2;
 
   }
   else if (WIFI_STATE == 2)
   {
-    ESP.wdtFeed();
+    // ESP.wdtFeed();
 
     if ( WiFi.status() == WL_CONNECTED ) {
       if (!mqttClient.connected()) {
@@ -94,50 +95,58 @@ int wifi_connect(int WIFI_STATE)
 
 
   else if (WIFI_STATE == 4) {
+  //  WiFi.mode(WIFI_OFF);
+   WiFi.mode(WIFI_AP);
+   // delay(500);
+    WiFiManager wifiManager;
+   // wifiManager.startConfigPortal("OnDemandAP");
+   
+//       WiFi.mode(WIFI_OFF);
 
-      WiFi.mode(WIFI_OFF);
+//   //WiFi.mode(WIFI_STA);
+//           yield();
+  //  WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
+     WiFiManager wifiManager_Ondemand;
+   wifiManager_Ondemand.setBreakAfterConfig(true);
 
-  //WiFi.mode(WIFI_STA);
-          yield();
-    WiFiManagerParameter custom_mqtt_server("server", "mqtt server", mqtt_server, 40);
-    WiFiManager wifiManager_Ondemand;
-    wifiManager_Ondemand.setBreakAfterConfig(true);
-
-    //wifiManager_Ondemand.setConfigPortalTimeout(150);
-    wifiManager_Ondemand.addParameter(&custom_mqtt_server);
-    wifiManager_Ondemand.setConfigPortalExitable(funct);
-      //  ESP.wdtFeed();
-        yield();
-    if (!wifiManager_Ondemand.startConfigPortal(id)) {
-      //      Serial.println("failed to connect and hit timeout");
-      //      delay(3000);
-      //      //reset and try again, or maybe put it to deep sleep
-      //      ESP.reset();
-      //      delay(5000);
-      WiFi.mode(WIFI_OFF);
-            delay(3000);
+//    //wifiManager_Ondemand.setConfigPortalTimeout(150);
+ //    wifiManager_Ondemand.addParameter(&custom_mqtt_server);
+     wifiManager_Ondemand.setConfigPortalExitable(funct);
+//       //  ESP.wdtFeed();
+//         yield();
+//     WiFi.mode(WIFI_OFF);
+//     WiFi.mode(WIFI_AP);
+//     delay(500);
+     if (!wifiManager_Ondemand.startConfigPortal(id)) {
+//       //      Serial.println("failed to connect and hit timeout");
+//       //      delay(3000);
+//       //      //reset and try again, or maybe put it to deep sleep
+//       //      ESP.reset();
+//       //      delay(5000);
+//       WiFi.mode(WIFI_OFF);
+//             delay(3000);
 
 
     }
-//yield();
+// //yield();
 
-    //   mqtt_server = custom_mqtt_server.getValue();
-    strcpy(mqtt_server, custom_mqtt_server.getValue());
+    //mqtt_server = custom_mqtt_server.getValue();
+ //strcpy(mqtt_server, custom_mqtt_server.getValue());
 
 
-    //  Serial.println("saving config");
-    DynamicJsonBuffer jsonBuffer;
-    JsonObject& json = jsonBuffer.createObject();
-    json["mqtt_server"] = mqtt_server;
+    // Serial.println("saving config");
+    // DynamicJsonBuffer jsonBuffer;
+    // JsonObject& json = jsonBuffer.createObject();
+    // json["mqtt_server"] = mqtt_server;
 
-    File configFile = SPIFFS.open("/config.json", "w");
-    if (!configFile) {
-      //    Serial.println("failed to open config file for writing");
-    }
+    // File configFile = SPIFFS.open("/config.json", "w");
+    // if (!configFile) {
+    //   //    Serial.println("failed to open config file for writing");
+    // }
 
-    //  json.printTo(Serial);
-    json.printTo(configFile);
-    configFile.close();
+    // //  json.printTo(Serial);
+    // json.printTo(configFile);
+    // configFile.close();
     return 2;
   }
   else  if (WIFI_STATE == 5)
