@@ -1,4 +1,5 @@
 #include <FS.h>
+#include <EEPROM.h>
 #include <ArduinoJson.h>
 #include <Wire.h>
 #include "src/err_handler.h"
@@ -57,21 +58,21 @@ int PMonState = 0;
 int qos = 1;
 int radius = 5;
 int connection = 0;
-int  switchon =1000;
+int  switchon = 1000;
 const char* VERSION = "0.8";
 String DataStatus = "nill";
 long lastReconnectAttempt = 0;
 unsigned long acktime;
 
-unsigned long int logtime=0;
-int logstatus=0;
+unsigned long int logtime = 0;
+int logstatus = 0;
 
 
 long lastDAttempt = 0;
-int detect1=2;
-int detect2=0;
+int detect1 = 2;
+int detect2 = 0;
 
-int irAmp=350;   //set ir value to zero
+int irAmp = 350; //set ir value to zero
 
 U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI u8g2(U8G2_R3, /* clock=*/ 1, /* data=*/3, /* cs=*/ 10);
 
@@ -136,8 +137,9 @@ const char* mqtt_channel_log = "dripo/%s/log";                  ///to send err d
 //const char* mqtt_channel_devack = "dripo/%s/ack_dev";       /// to publish dev ack
 
 const int mqtt_port = 1883;
-char* mqtt_server = "192.168.0.13";
-//char mqtt_server[40];
+//char* mqtt_server = "192.168.0.13";
+char mqtt_server[20]="0";
+
 //char mqtt_port[6] = "1883";
 
 WiFiClient wclient;  //Declares a WifiClient Object using ESP8266WiFi
@@ -151,6 +153,11 @@ void setup() {
   Serial.begin(115200);
 
   Serial.println("boot drip");
+
+      EEPROM.begin(512);
+  EEPROM.get(0, mqtt_server);
+  EEPROM.end();
+
 
   stateOfCharge = batteryMonitor.getSoC();
 
@@ -169,7 +176,7 @@ void setup() {
   pinMode(ENCODER_PINA, INPUT_PULLUP);
   pinMode(ENCODER_PINB, INPUT_PULLUP);
   pinMode(DROP_PIN, INPUT_PULLUP);
- // analogWrite(WAKE_PIN,switchon);
+  // analogWrite(WAKE_PIN,switchon);
 
   attachInterrupt(digitalPinToInterrupt(ENCODER_BTN), checkButton, CHANGE);
 
@@ -189,13 +196,13 @@ void setup() {
 }
 
 
-void (* myFunc[19])() = {drawLogo, wifi_init, menu_1, menu_2, menu_3, M_infuse, M_setup, M_pwroff, update_dripo, Sho_Rate, WifiConf, Sleep, fin, Developer, ServErr, batlowoff, Infbatchk, Batchk,SensorCalib};
+void (* myFunc[19])() = {drawLogo, wifi_init, menu_1, menu_2, menu_3, M_infuse, M_setup, M_pwroff, update_dripo, Sho_Rate, WifiConf, Sleep, fin, Developer, ServErr, batlowoff, Infbatchk, Batchk, SensorCalib};
 void (* UI_Fn[17])() = {UI_Logo, UI_Wifi, UI_Menu, UI_Rate, UI_infuse, UI_Update, UI_Shutdown, UI_Setup, UI_WifiConf, UI_fin, UI_dripo, UI_ServErr, UI_batlow, UI_InfBatChK, UI_batchk, UI_batfull, UI_Calib};
 
 void loop() {
 
   digitalWrite(WAKE_PIN, LOW);
-//analogWrite(WAKE_PIN,switchon);
+  //analogWrite(WAKE_PIN,switchon);
   u8g2.clearBuffer();
   UI_Fn[ui_state]();
   STBAR();

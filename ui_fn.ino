@@ -402,7 +402,8 @@ if(analogRead(A0)>530)
   u8g2.setCursor(0, 100);
   u8g2.print(cellVoltage);
   u8g2.setCursor(0, 120);
-    u8g2.print(VERSION);
+//    u8g2.print(VERSION);
+    u8g2.print(mqtt_server);
 
 
   u8g2.setFont(u8g2_font_crox2h_tr);

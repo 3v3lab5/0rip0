@@ -1,4 +1,5 @@
 boolean mqtt_reconnect() {
+
 mqttClient.setServer(mqtt_server, mqtt_port);
 mqttClient.setCallback(callback);
   if (mqttClient.connect(id)) {
