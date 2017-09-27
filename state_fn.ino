@@ -16,12 +16,7 @@ void wifi_init()
   wifi_status = 1;
   state = 2;
   ui_state = 2;
-  switch (get_button())
-  {
-    case 2:   wifi_status = 4;
 
-      break;
-  }
 
 }
 
@@ -153,12 +148,12 @@ void M_pwroff()
           mqttClient.disconnect();
 
         }
-       // switchon=0;
+        // switchon=0;
         digitalWrite(WAKE_PIN, HIGH);
-       u8g2.setPowerSave(1);
+        u8g2.setPowerSave(1);
         system_deep_sleep_set_option(2);
         system_deep_sleep(0);
-               yield();
+        yield();
         delay(500);
       }
       break;
@@ -193,7 +188,7 @@ void Sho_Rate()
   }
 
 
-  if (MonState == 0 || (MonState == 3 && (altmsg == NO_ERR||devAck==true))) {
+  if (MonState == 0 || (MonState == 3 && (altmsg == NO_ERR || devAck == true))) {
 
 
     switch (get_button())
@@ -209,11 +204,11 @@ void Sho_Rate()
   else if (MonState == 2) {
 
 
-            if(_dripo.MonRate() == 0)
-            
-            {
-              MonState = PMonState;
-            }
+    if (_dripo.MonRate() == 0)
+
+    {
+      MonState = PMonState;
+    }
 
 
     switch (get_button())
@@ -244,10 +239,10 @@ void Sho_Rate()
           // dpf->~MENU();
           // delete dpf;
           //MENU *dpf= new MENU;
-        //  if (PMonState == 3)
-       //   {
-            DataStatus = "stop";
-       //   }
+          //  if (PMonState == 3)
+          //   {
+          DataStatus = "stop";
+          //   }
           state = 2;
           ui_state = 2;
           infuseMenu = 1;
@@ -329,6 +324,18 @@ void Developer()
       state = 6;
       ui_state = 7;
       break;
+
+
+    case 3://if(scroller<-110)
+    //{
+      scroller=scroller+5;
+   // }
+      break;
+    case 4: //if(scroller>0)
+   // {
+      scroller=scroller-5;
+   // }
+      break;
   }
 
 
@@ -342,7 +349,7 @@ void ServErr()
     case 1: if (dialogbox.getDia() == "Ok") {
         state = 2;
         ui_state = 2;
-      break;
+        break;
 
       }
 
@@ -363,8 +370,8 @@ void Infbatchk()
   switch (get_button())
   {
     case 1: if (dialogbox1.getDia() == "Ok") {
-            ui_state = 16;
-            state = 18;
+        ui_state = 16;
+        state = 18;
       }
       break;
   }
@@ -383,19 +390,19 @@ void Batchk()
 void SensorCalib()
 {
 
-    analogWriteFreq(38000);
-  analogWrite(IR_PIN,irAmp);
-  if(analogRead(A0)<512)
-{
-  irAmp=irAmp+10;
-}
+  analogWriteFreq(38000);
+  analogWrite(IR_PIN, irAmp);
+  if (analogRead(A0) < 512)
+  {
+    irAmp = irAmp + 10;
+  }
 
-else if(analogRead(A0)>530)
-{
-  irAmp=irAmp-10;
-}
-else{
-              ui_state = 3;
-               state = 9;
-}
+  else if (analogRead(A0) > 530)
+  {
+    irAmp = irAmp - 10;
+  }
+  else {
+    ui_state = 3;
+    state = 9;
+  }
 }

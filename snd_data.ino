@@ -1,80 +1,29 @@
- 
-#define FPM_SLEEP_MAX_TIME 0xFFFFFFF
+/*This funtion sends rate,infused vol, total vol of current infusion to the main station*/
+
 
 void sendRate()
 {
-  char e_data[80];
+  char e_data[80];                   // all data will merged to this
+  int SRate = _dripo.getRateMl();    //get rate in ml
+  int SIvol = _dripo.getvolInf();    // get infsed volume
+  int Tvol = _dripo.getTvol();       //get total volume
+  int SRtime = _dripo.getRtime();    //get remaining time
+  String medi = _dripo.getMed() + "-" + _dripo.getTimetable() + "-" + "infusing"; //get medicine id,timetable id and status and merged
+  const char* chr = medi.c_str();                                          // converted to const char to send via mqtt
+  sprintf(e_data, "%s-%d-%d-%d-%d", chr, SRate, SIvol, SRtime, Tvol);      // all data is merged
+  if (WiFi.status() == WL_CONNECTED) {                                     // check wifi is connection
+    if (mqttClient.connected()) {                                          //check mqtt connection
+      sprintf(rate_channel, mqtt_channel_mon, id);                           // merge device id with the rate channel to publish data
+      mqttClient.publish(rate_channel, e_data, true);                        // publish data to rate channel and data is retained true so that if a new client is
+      // mqttClient.disconnect();                                             //conneted it also recieves the last message
+      ticker_reached = false;                                                // data is send and ticker is reset
+      yield() ;
+    }
 
-  int SRate = _dripo.getRateMl();
-  int SIvol = _dripo.getvolInf();
-  int Tvol = _dripo.getTvol();
-
-  int SRtime = _dripo.getRtime();
-  String medi = _dripo.getMed()+"-"+_dripo.getTimetable()+"-"+"infusing";
-  const char* chr = medi.c_str();
-  sprintf(e_data, "%s-%d-%d-%d-%d", chr, SRate, SIvol, SRtime,Tvol);
-
-
- // if (WiFi.status() != WL_CONNECTED)
-// {
-    //        wifi_fpm_do_wakeup();
-    //
-    //   wifi_fpm_close();
-    //     wifi_station_connect();
-    // WiFi.forceSleepWake();
-    //
-    //  wifi_set_opmode(STATION_MODE);
-    //   delay(1);
- //   WiFi.forceSleepWake();
-//    delay(1);
- //  wifi_status=6;
-
-// }
-
-
-  yield() ;
-  if (WiFi.status() == WL_CONNECTED) {
-    if (mqttClient.connected()) {
-    sprintf(rate_channel, mqtt_channel_mon, id);
-    mqttClient.publish(rate_channel, e_data,true);
-   // mqttClient.disconnect();
-    ticker_reached = false;
-  //  wifi_status=5;
-   yield() ;
-  }
-    
   }
 
 
 }
 
-// void Notifier(int err)
-// {
-//   char e_data[50];
-//     String medi = _dripo.getMed();
-//   const char* chr = medi.c_str();
-//   sprintf(e_data, "%s-%s", chr, "rate_err");
 
-//     if (WiFi.status() == WL_CONNECTED) {
-//     if (mqttClient.connected()) {
-//       if(err ==200){
-//       sprintf(e_data, "%s-%s", chr, "rate_err");
-
-//     sprintf(rate_channel,mqtt_channel_err, id);
-//     mqttClient.publish(rate_channel, e_data);
-//       }
-//       if(err ==100){ 
-//     sprintf(e_data, "%s-%s", chr, "rate_ok");
-
-//   sprintf(rate_channel,mqtt_channel_err, id);
-//     mqttClient.publish(rate_channel, e_data);
-        
-//       }
-//    // mqttClient.disconnect();
-//   //  wifi_status=5;
-//    yield() ;
-//   }
-    
-//   }
-// }
 

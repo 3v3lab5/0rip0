@@ -57,13 +57,12 @@ String send_req(String Data)
   int SIvol = _dripo.getvolInf();
   int SRtime = _dripo.getRtime();
    int Tvol = _dripo.getTvol();
-  int S_df = _dripo.getDf();
-
+   
  //  String medi=Data+"-"+_dripo.getBed()+"-"+_dripo.getMed();
         String medi=_dripo.getMed()+"-"+_dripo.getTimetable()+"-"+Data;
   const char* chr = medi.c_str();
    //   mqttClient.connect(id);
-     sprintf(e_data, "%s-%d-%d-%d-%d-%d", chr, SRate, SIvol, SRtime,Tvol,S_df);
+     sprintf(e_data, "%s-%d-%d-%d-%d", chr, SRate, SIvol, SRtime,Tvol);
     sprintf(pat_channel, mqtt_channel_mon, id);
     
     mqttClient.publish(pat_channel,e_data,true);
@@ -79,13 +78,12 @@ String send_req(String Data)
   int SIvol = _dripo.getvolInf();
   int SRtime = _dripo.getRtime();
    int Tvol = _dripo.getTvol();
-  int S_df = _dripo.getDf();
 
  //  String medi=Data+"-"+_dripo.getBed()+"-"+_dripo.getMed();
         String medi=_dripo.getMed()+"-"+_dripo.getTimetable()+"-"+Data;
   const char* chr = medi.c_str();
    //   mqttClient.connect(id);
-        sprintf(e_data, "%s-%d-%d-%d-%d-%d", chr, SRate, SIvol, SRtime,Tvol,S_df);
+        sprintf(e_data, "%s-%d-%d-%d-%d", chr, SRate, SIvol, SRtime,Tvol);
     sprintf(pat_channel, mqtt_channel_mon, id);
     mqttClient.publish(pat_channel, e_data,true);
     return "nill";
