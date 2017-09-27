@@ -73,7 +73,7 @@ int detect1 = 2;
 int detect2 = 0;
 
 int irAmp = 350; //set ir value to zero
-
+int scroller =0;
 U8G2_SSD1306_128X64_NONAME_F_3W_SW_SPI u8g2(U8G2_R3, /* clock=*/ 1, /* data=*/3, /* cs=*/ 10);
 
 String t1 = "INFUSE";

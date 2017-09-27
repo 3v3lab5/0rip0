@@ -2,8 +2,8 @@
 
 int wifi_connect(int WIFI_STATE)
 {
-
   mqttClient.loop();
+
   const char* DRIPO_NAME = "DRIPO-%d";
 
   sprintf(id, DRIPO_NAME, ESP.getChipId());
@@ -11,25 +11,29 @@ int wifi_connect(int WIFI_STATE)
 
   if (WIFI_STATE == 1)
   {
+    if ( WiFi.status() != WL_CONNECTED )
+    {
+      WiFiManager wifiManager;
+      //  wifiManager.setSaveConfigCallback(saveConfigCallback);
+      wifiManager.setConnectTimeout(10);
+      wifiManager.setConfigPortalTimeout(1);
 
-    WiFiManager wifiManager;
-    //  wifiManager.setSaveConfigCallback(saveConfigCallback);
-    wifiManager.setConnectTimeout(10);
-    wifiManager.setConfigPortalTimeout(1);
 
+      if (!wifiManager.autoConnect(id)) {
 
-    if (!wifiManager.autoConnect(id)) {
+        // WiFi.mode(WIFI_STA);
 
-      // WiFi.mode(WIFI_STA);
-
-      return 2;
-      // WiFi.begin();
-      // yield();
+        return 2;
+        // WiFi.begin();
+        // yield();
+      }
     }
-
     if ( WiFi.status() == WL_CONNECTED && strcmp(mqtt_server, "0") != 0 ) {
-      mqtt_reconnect();
+      if (!mqttClient.connected()) {
+        mqtt_reconnect();
+      }
     }
+
 
     return 2;
 
@@ -41,7 +45,7 @@ int wifi_connect(int WIFI_STATE)
     if ( WiFi.status() == WL_CONNECTED && strcmp(mqtt_server, "0") != 0) {
       if (!mqttClient.connected()) {
         long now = millis();
-        if (now - lastReconnectAttempt > 5000 && connection < 4) {
+        if (now - lastReconnectAttempt > 5000 && connection < 2) {
           lastReconnectAttempt = now;
           connection++;
 
@@ -96,6 +100,10 @@ int wifi_connect(int WIFI_STATE)
     //     WiFi.mode(WIFI_OFF);
     //     WiFi.mode(WIFI_AP);
     //     delay(500);
+    if (mqttClient.connected()) {
+      mqttClient.disconnect();
+
+    }
     if (!wifiManager_Ondemand.startConfigPortal(id)) {
       //       //      Serial.println("failed to connect and hit timeout");
       //       //      delay(3000);
@@ -107,9 +115,7 @@ int wifi_connect(int WIFI_STATE)
 
 
     }
-    // //yield();
 
-    //    mqtt_server = custom_mqtt_server.getValue();
     strcpy(mqtt_server, custom_mqtt_server.getValue());
 
     Serial.println(mqtt_server);
@@ -119,8 +125,12 @@ int wifi_connect(int WIFI_STATE)
     EEPROM.commit();
     EEPROM.end();
     lastReconnectAttempt = 0;
-    connection = 3;
-    return 2;
+    connection = 1;
+
+    state = 1;
+    ui_state = 1;
+
+    return 1;
   }
   else  if (WIFI_STATE == 5)
 

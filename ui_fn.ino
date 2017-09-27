@@ -3,9 +3,11 @@
 void UI_Logo() {
 
 
+
   u8g2.setFont( u8g2_font_profont22_tf );
   u8g2.setCursor(4, 64);
   u8g2.print("Dripo");
+ // u8g2.drawXBM( 25, 30, siteic_width, siteic_height, siteic_bits);
 
 
 }
@@ -389,21 +391,36 @@ if(analogRead(A0)>530)
 
   const char* DRIPO_NAME = "DRIPO-%d";
 
-
+  u8g2.setCursor(0, scroller+10);
+  u8g2.print("Dev Name:");
   sprintf(id, DRIPO_NAME, ESP.getChipId());
-  u8g2.setCursor(0, 20);
+  u8g2.setCursor(0, scroller+22);
   u8g2.print(id);
-  u8g2.setCursor(0, 40);
-  u8g2.print(analogRead(A0));
-    u8g2.setCursor(32, 40);
-  //u8g2.print(bigNum);
-  u8g2.setCursor(0, 70);
-  u8g2.print( batteryMonitor.getSoC());
-  u8g2.setCursor(0, 100);
-  u8g2.print(cellVoltage);
-  u8g2.setCursor(0, 120);
-//    u8g2.print(VERSION);
+    u8g2.setCursor(0, scroller+34);
+  u8g2.print("Address:");
+   u8g2.setCursor(0, scroller+46);
+  u8g2.print(WiFi.localIP());
+  u8g2.setCursor(0, scroller+58);
+   u8g2.print("Server:");
+     u8g2.setCursor(0, scroller+70);
     u8g2.print(mqtt_server);
+  u8g2.setCursor(0,scroller+82);
+    u8g2.print("Version:");
+      u8g2.setCursor(0,scroller+94);
+    u8g2.print("alpha");
+      u8g2.setCursor(0, scroller+106);
+  u8g2.print("Battery:");
+   u8g2.setCursor(0,scroller+118);
+  u8g2.print( batteryMonitor.getSoC());
+  u8g2.setCursor(48, scroller+118);
+  u8g2.print(analogRead(A0));
+//    u8g2.setCursor(32, 40);
+//  //u8g2.print(bigNum);
+//  u8g2.setCursor(0, 70);
+//  u8g2.print( batteryMonitor.getSoC());
+//  u8g2.setCursor(0, 100);
+//  u8g2.print(cellVoltage);
+
 
 
   u8g2.setFont(u8g2_font_crox2h_tr);
